@@ -29,7 +29,7 @@
 
 
 // https://github.com/mono/mono/blob/master/mcs/class/Mono.Posix/Mono.Unix/UnixMarshal.cs
-namespace libACL
+namespace libACL.Unix
 {
 
 

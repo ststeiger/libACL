@@ -263,6 +263,8 @@ namespace TestACL
 
         static void Main(string[] args)
         {
+            Test2.Test();
+            
             // https://linux.die.net/man/2/access
             Mono.Unix.Native.Syscall.access("path", Mono.Unix.Native.AccessModes.F_OK | Mono.Unix.Native.AccessModes.R_OK);
             // https://linux.die.net/man/2/faccessat

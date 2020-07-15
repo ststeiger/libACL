@@ -28,7 +28,7 @@
  */
 
 // https://github.com/mono/mono/blob/master/mcs/class/Mono.Posix/Mono.Unix/UnixSystem.Text.Encoding.cs
-namespace libACL
+namespace libACL.Unix
 {
 
 

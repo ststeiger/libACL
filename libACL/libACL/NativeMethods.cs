@@ -7,8 +7,8 @@ namespace libACL
     
     using System.Security;
     using System.Runtime.InteropServices;
-
-
+    
+    
     // typedef struct __acl_permset_ext *acl_permset_t;
     // typedef struct __acl_entry_ext	*acl_entry_t;
     // typedef struct __acl_ext	*acl_t;
@@ -32,7 +32,7 @@ namespace libACL
 #if USE_LPUTF8Str
         internal static extern System.IntPtr acl_get_file([MarshalAs(UnmanagedType.LPUTF8Str)] string path, acl_type_t type);
 #else
-        internal static extern System.IntPtr acl_get_file([MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(FileNameMarshaler))] string path, acl_type_t type);
+        internal static extern System.IntPtr acl_get_file([MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(Unix.FileNameMarshaler))] string path, acl_type_t type);
 #endif
 
 
@@ -44,7 +44,7 @@ namespace libACL
 #if USE_LPUTF8Str
         internal static extern int acl_set_file([MarshalAs(UnmanagedType.LPUTF8Str)] string path, acl_type_t type, System.IntPtr acl);
 #else
-        internal static extern int acl_set_file([MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(FileNameMarshaler))] string path, acl_type_t type, System.IntPtr acl);
+        internal static extern int acl_set_file([MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(Unix.FileNameMarshaler))] string path, acl_type_t type, System.IntPtr acl);
 #endif
 
 
@@ -56,7 +56,7 @@ namespace libACL
 #if USE_LPUTF8Str
         internal static extern int acl_extended_file([MarshalAs(UnmanagedType.LPUTF8Str)] string path);
 #else
-        internal static extern int acl_extended_file([MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(FileNameMarshaler))] string path);
+        internal static extern int acl_extended_file([MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(Unix.FileNameMarshaler))] string path);
 #endif
 
 
@@ -65,13 +65,26 @@ namespace libACL
         [SuppressUnmanagedCodeSecurity]
         [DllImport(ACL_LIBRARY, CallingConvention = System.Runtime.InteropServices.CallingConvention.Cdecl, EntryPoint = "acl_get_entry")]
         internal static extern int acl_get_entry(System.IntPtr acl, AclEntryConstants entry_id, out System.IntPtr entry); // Double pointer, correct ???
-        
+
+        // int acl_create_entry(acl_t *acl_p, acl_entry_t *entry_p);
+        // https://linux.die.net/man/3/acl_create_entry
+        [SuppressUnmanagedCodeSecurity]
+        [DllImport(ACL_LIBRARY, CallingConvention = System.Runtime.InteropServices.CallingConvention.Cdecl, EntryPoint = "acl_create_entry")]
+        internal static extern int acl_create_entry(ref System.IntPtr acl, ref System.IntPtr entry); 
+
         
         // extern void * acl_get_qualifier(acl_entry_t entry_d);
         // https://linux.die.net/man/3/acl_get_qualifier
         [SuppressUnmanagedCodeSecurity]
         [DllImport(ACL_LIBRARY, CallingConvention = System.Runtime.InteropServices.CallingConvention.Cdecl, EntryPoint = "acl_get_qualifier")]
         internal static extern System.IntPtr acl_get_qualifier(System.IntPtr entry);
+
+        
+        // int acl_set_qualifier(acl_entry_t entry_d, const void *qualifier_p);
+        // https://linux.die.net/man/3/acl_set_qualifier
+        [SuppressUnmanagedCodeSecurity]
+        [DllImport(ACL_LIBRARY, CallingConvention = System.Runtime.InteropServices.CallingConvention.Cdecl, EntryPoint = "acl_set_qualifier")]
+        internal static extern int acl_set_qualifier(System.IntPtr entry, ref uint qualifier);
         
         
         // extern int acl_get_tag_type(acl_entry_t entry_d, acl_tag_t *tag_type_p);
@@ -79,6 +92,12 @@ namespace libACL
         [SuppressUnmanagedCodeSecurity]
         [DllImport(ACL_LIBRARY, CallingConvention = System.Runtime.InteropServices.CallingConvention.Cdecl, EntryPoint = "acl_get_tag_type")]
         internal static extern int acl_get_tag_type(System.IntPtr entry, out acl_tag_t tag_type);
+
+        // int acl_set_tag_type(acl_entry_t entry_d, acl_tag_t tag_type);
+        // https://linux.die.net/man/3/acl_set_tag_type
+        [SuppressUnmanagedCodeSecurity]
+        [DllImport(ACL_LIBRARY, CallingConvention = System.Runtime.InteropServices.CallingConvention.Cdecl, EntryPoint = "acl_set_tag_type")]
+        internal static extern int acl_set_tag_type(System.IntPtr entry, acl_tag_t tag_type);
         
         
         // extern int acl_get_permset(acl_entry_t entry_d, acl_permset_t *permset_p);

@@ -1,4 +1,6 @@
 
+using System.Net.Http.Headers;
+
 namespace libACL 
 {
 
@@ -119,8 +121,30 @@ namespace libACL
             
             return ret;
         } // End Function AclGetEntry 
+
+        /// <summary>
+        /// The acl_create_entry() function creates a new ACL entry in the ACL pointed to by the contents of the pointer argument acl. On success, the function returns a descriptor for the new ACL entry via entry.
+        /// </summary>
+        /// <param name="acl"></param>
+        /// <param name="entry"></param>
+        /// <returns>The acl_create_entry() function returns the value 0 if successful; otherwise the value -1 is returned and the global variable errno is set to indicate the error.</returns>
+        public static int AclCreateEntry(acl_t acl, acl_entry_t entry)
+        {
+            int ret = NativeMethods.acl_create_entry(ref acl.Native, ref  entry.Native);
+            if (ret == -1) 
+            {
+                // return null;
+                System.Console.Error.WriteLine("Error on AclCreateEntry");
+                
+                Mono.Unix.Native.Errno er = Mono.Unix.Native.Stdlib.GetLastError();
+                string message = Mono.Unix.Native.Stdlib.strerror(er);
+                throw new System.InvalidOperationException(message);
+            } // End if (ret == -1)  
+            
+            return ret;
+        } // End Function AclCreateEntry 
         
-        
+
         /// <summary>
         /// retrieve the qualifier from an ACL entry
         /// </summary>
@@ -142,6 +166,30 @@ namespace libACL
             return new AclQualifier(ptr);
         } // End Function AclGetQualifier 
         
+        // int acl_set_qualifier(acl_entry_t entry_d, const void *qualifier_p);
+        /// <summary>
+        /// The acl_set_qualifier() function sets the qualifier of the ACL entry indicated by the argument entry_d to the value referred to by the argument qualifier_p.
+        /// </summary>
+        /// <param name="entry"></param>
+        /// <param name="qualifier"></param>
+        /// <returns>The acl_set_qualifier() function returns the value 0 if successful; otherwise the value -1 is returned and the global variable errno is set to indicate the error.</returns>
+        public static void AclSetQualifier(acl_entry_t entry, uint qualifier)
+        {
+            int ret = NativeMethods.acl_set_qualifier(entry.Native, ref qualifier);
+            if (ret == -1)
+            {
+                System.Console.Error.WriteLine("Error on AclSetQualifier");
+                
+                Mono.Unix.Native.Errno er = Mono.Unix.Native.Stdlib.GetLastError();
+                string message = Mono.Unix.Native.Stdlib.strerror(er);
+                throw new System.InvalidOperationException(message);
+            } // End if (ret == -1)
+            
+        } // End Function AclSetQualifier 
+
+
+
+
         /// <summary>
         /// get the tag type of an ACL entry
         /// </summary>
@@ -165,8 +213,29 @@ namespace libACL
             return tag_type;
         } // End Function AclGetTagType 
 
-        
-        
+        /// <summary>
+        /// The acl_set_tag_type() function sets the tag type of the ACL entry indicated by the argument entry_d to the value of the argument tag_type.
+        /// </summary>
+        /// <param name="entry"></param>
+        /// <param name="tag_type"></param>
+        /// <returns>The acl_set_tag_type() function returns the value 0 if successful; otherwise the value -1 is returned and the global variable errno is set to indicate the error.</returns>
+        /// <exception cref="InvalidOperationException"></exception>
+        public static void AclSetTagType(acl_entry_t entry, acl_tag_t tag_type)
+        {
+            int ret = NativeMethods.acl_set_tag_type(entry.Native, tag_type);
+            if (ret == -1)
+            {
+                System.Console.Error.WriteLine("Error on AclSetTagType");
+                
+                Mono.Unix.Native.Errno er = Mono.Unix.Native.Stdlib.GetLastError();
+                string message = Mono.Unix.Native.Stdlib.strerror(er);
+                throw new System.InvalidOperationException(message);
+            } // End if (ret == -1) 
+            
+        } // End Function AclSetTagType 
+
+
+
         /// <summary>
         /// retrieve the permission set from an ACL entry
         /// </summary>
@@ -515,7 +584,7 @@ namespace libACL
         /// <param name="ptr"></param>
         /// <returns>The acl_free() function returns the value 0 if successful; otherwise the value -1 is returned and the global variable errno is set to indicate the error.</returns>
         /// <exception cref="InvalidOperationException"></exception>
-        public static int AclFree(System.IntPtr ptr)
+        public static void AclFree(System.IntPtr ptr)
         {
             int ret = NativeMethods.acl_free(ptr);
             if (ret != 0) 
@@ -526,19 +595,18 @@ namespace libACL
                 throw new System.InvalidOperationException(message);    
             } // End if (ret != 0) 
             
-            return ret;
         } // End Function AclFree 
         
         
-        public static int AclFree(acl_t acl_file)
+        public static void AclFree(acl_t acl_file)
         {
-            return AclFree(acl_file.Native);
+            AclFree(acl_file.Native);
         } // End Function AclFree 
         
         
-        public static int AclFree(AclQualifier qualifier)
+        public static void AclFree(AclQualifier qualifier)
         {
-            return AclFree(qualifier.Native);
+            AclFree(qualifier.Native);
         } // End Function AclFree 
         
         
