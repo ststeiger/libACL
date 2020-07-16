@@ -1,4 +1,5 @@
-﻿namespace TestACL
+﻿
+namespace TestACL
 {
 
 	using libACL;
@@ -48,11 +49,13 @@
 			// }
 
 			// Add an entry for a named group to the ACL.
-			if(API.AclCreateEntry(my_acl, my_entry)== -1)
-			{
-				System.Console.Error.WriteLine("acl_create_entry()");
-				return EXIT_FAILURE;
-			}
+			API.AclCreateEntry(my_acl, my_entry);
+			// Throws !
+			// if (acl_create_entry(my_acl, my_entry)== -1)
+			// {
+			//     System.Console.Error.WriteLine("acl_create_entry()");
+			//     return EXIT_FAILURE;
+			// }
 
 			API.AclSetTagType(my_entry, acl_tag_t.ACL_USER);
 			// if (acl_set_tag_type(my_entry, ACL_USER) == -1)
@@ -163,10 +166,10 @@
 			// }
 
 			return EXIT_SUCCESS;
-		}
-		
-		
-	}
+		} // End Sub Test 
+
+
+	} // End Class Test2 
 	
-	
-}
+
+} // End Namespace TestACL 

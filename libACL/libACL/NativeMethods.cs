@@ -16,13 +16,14 @@ namespace libACL
     {
         
         private const string ACL_LIBRARY = "acl";
-        
-        
+
+
         // extern const char *acl_error(int code);
         // https://linux.die.net/man/3/acl_error
         [SuppressUnmanagedCodeSecurity]
         [DllImport(ACL_LIBRARY, CallingConvention = System.Runtime.InteropServices.CallingConvention.Cdecl, EntryPoint = "acl_error")]
         internal static extern string acl_error(int code);
+
 
 
         // extern acl_t acl_get_file(const char *path_p, acl_type_t type);
@@ -34,6 +35,13 @@ namespace libACL
 #else
         internal static extern System.IntPtr acl_get_file([MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(Unix.FileNameMarshaler))] string path, acl_type_t type);
 #endif
+
+
+        // acl_t acl_get_fd(int fd);
+        // https://linux.die.net/man/3/acl_get_fd
+        [SuppressUnmanagedCodeSecurity]
+        [DllImport(ACL_LIBRARY, CallingConvention = System.Runtime.InteropServices.CallingConvention.Cdecl, EntryPoint = "acl_get_fd")]
+        internal static extern System.IntPtr acl_get_fd(int fd);
 
 
 
@@ -48,6 +56,24 @@ namespace libACL
 #endif
 
 
+        // https://linux.die.net/man/3/acl_delete_def_file
+        // int acl_delete_def_file(const char* path_p);
+        [SuppressUnmanagedCodeSecurity]
+        [DllImport(ACL_LIBRARY, CallingConvention = System.Runtime.InteropServices.CallingConvention.Cdecl, EntryPoint = "acl_delete_def_file")]
+#if USE_LPUTF8Str
+        internal static extern int acl_delete_def_file([MarshalAs(UnmanagedType.LPUTF8Str)] string path);
+#else
+        internal static extern int acl_delete_def_file([MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(Unix.FileNameMarshaler))] string path);
+#endif
+
+
+
+        // int acl_set_fd(int fd, acl_t acl);
+        // https://linux.die.net/man/3/acl_set_fd
+        [SuppressUnmanagedCodeSecurity]
+        [DllImport(ACL_LIBRARY, CallingConvention = System.Runtime.InteropServices.CallingConvention.Cdecl, EntryPoint = "acl_set_fd")]
+        internal static extern int acl_set_fd(int fd, System.IntPtr acl);
+
 
         // int acl_extended_file(const char *path_p);
         // https://linux.die.net/man/3/acl_extended_file
@@ -60,19 +86,65 @@ namespace libACL
 #endif
 
 
+        [SuppressUnmanagedCodeSecurity]
+        [DllImport(ACL_LIBRARY, CallingConvention = System.Runtime.InteropServices.CallingConvention.Cdecl, EntryPoint = "acl_extended_file_nofollow ")]
+#if USE_LPUTF8Str
+        internal static extern int acl_extended_file_nofollow ([MarshalAs(UnmanagedType.LPUTF8Str)] string path);
+#else
+        internal static extern int acl_extended_file_nofollow([MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(Unix.FileNameMarshaler))] string path);
+#endif
+
+
         // extern int acl_get_entry(acl_t acl, int entry_id, acl_entry_t *entry_p);
         // https://linux.die.net/man/3/acl_get_entry
         [SuppressUnmanagedCodeSecurity]
         [DllImport(ACL_LIBRARY, CallingConvention = System.Runtime.InteropServices.CallingConvention.Cdecl, EntryPoint = "acl_get_entry")]
         internal static extern int acl_get_entry(System.IntPtr acl, AclEntryConstants entry_id, out System.IntPtr entry); // Double pointer, correct ???
 
+
+        // acl_t acl_from_mode(mode_t mode);
+        // https://linux.die.net/man/3/acl_from_mode
+        [SuppressUnmanagedCodeSecurity]
+        [DllImport(ACL_LIBRARY, CallingConvention = System.Runtime.InteropServices.CallingConvention.Cdecl, EntryPoint = "acl_from_mode")]
+        internal static extern System.IntPtr acl_from_mode(mode_t mode);
+
+
+        // int acl_equiv_mode(acl_t acl, mode_t* mode_p);
+        // https://linux.die.net/man/3/acl_equiv_mode
+        [SuppressUnmanagedCodeSecurity]
+        [DllImport(ACL_LIBRARY, CallingConvention = System.Runtime.InteropServices.CallingConvention.Cdecl, EntryPoint = "acl_equiv_mode")]
+        internal static extern int acl_equiv_mode(System.IntPtr acl, ref mode_t mode);
+
+
+        // acl_t acl_init(int count);
+        // https://linux.die.net/man/3/acl_init
+        [SuppressUnmanagedCodeSecurity]
+        [DllImport(ACL_LIBRARY, CallingConvention = System.Runtime.InteropServices.CallingConvention.Cdecl, EntryPoint = "acl_init")]
+        internal static extern System.IntPtr acl_init(int count);
+
+
         // int acl_create_entry(acl_t *acl_p, acl_entry_t *entry_p);
         // https://linux.die.net/man/3/acl_create_entry
         [SuppressUnmanagedCodeSecurity]
         [DllImport(ACL_LIBRARY, CallingConvention = System.Runtime.InteropServices.CallingConvention.Cdecl, EntryPoint = "acl_create_entry")]
-        internal static extern int acl_create_entry(ref System.IntPtr acl, ref System.IntPtr entry); 
+        internal static extern int acl_create_entry(ref System.IntPtr acl, ref System.IntPtr entry);
 
-        
+
+
+        // https://linux.die.net/man/3/acl_delete_entry
+        // int acl_delete_entry(acl_t acl, acl_entry_t entry_d);
+        [SuppressUnmanagedCodeSecurity]
+        [DllImport(ACL_LIBRARY, CallingConvention = System.Runtime.InteropServices.CallingConvention.Cdecl, EntryPoint = "acl_delete_entry")]
+        internal static extern int acl_delete_entry(System.IntPtr acl, System.IntPtr entry);
+
+
+        // int acl_copy_entry(acl_entry_t dest_d, acl_entry_t src_d);
+        // https://linux.die.net/man/3/acl_copy_entry
+        [SuppressUnmanagedCodeSecurity]
+        [DllImport(ACL_LIBRARY, CallingConvention = System.Runtime.InteropServices.CallingConvention.Cdecl, EntryPoint = "acl_copy_entry")]
+        internal static extern int acl_copy_entry(System.IntPtr dest, System.IntPtr src_d);
+
+
         // extern void * acl_get_qualifier(acl_entry_t entry_d);
         // https://linux.die.net/man/3/acl_get_qualifier
         [SuppressUnmanagedCodeSecurity]

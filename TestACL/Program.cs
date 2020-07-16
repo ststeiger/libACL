@@ -16,23 +16,35 @@ namespace TestACL
                 // https://man7.org/linux/man-pages/man7/xattr.7.html
                 string path = "/root/Desktop/CppSharp.txt";
 
-                // Mono.Unix.Native.Syscall.getxattr()
-                // Mono.Unix.Native.Syscall.fgetxattr()
-                // Mono.Unix.Native.Syscall.lgetxattr()
+            // https:// linux.die.net/man/2/access
+            // https:// linux.die.net/man/1/kpseaccess
+            // https:// linux.die.net/man/1/explain
 
-                // Mono.Unix.Native.Syscall.setxattr()
-                // Mono.Unix.Native.Syscall.fsetxattr()
-                // Mono.Unix.Native.Syscall.lsetxattr
+            // https:// linux.die.net/man/5/acl
+            // https:// linux.die.net/man/1/setfacl
 
-                // Mono.Unix.Native.Syscall.llistxattr()
-                // Mono.Unix.Native.Syscall.flistxattr()
-                // Mono.Unix.Native.Syscall.llistxattr()
 
-                // Mono.Unix.Native.Syscall.removexattr()
-                // Mono.Unix.Native.Syscall.fremovexattr()
-                // Mono.Unix.Native.Syscall.lremovexattr()
+            // https:// www.chromium.org/developers/how-tos/api-keys
 
-                if (System.IO.File.Exists(path))
+
+
+            // Mono.Unix.Native.Syscall.getxattr()
+            // Mono.Unix.Native.Syscall.fgetxattr()
+            // Mono.Unix.Native.Syscall.lgetxattr()
+
+            // Mono.Unix.Native.Syscall.setxattr()
+            // Mono.Unix.Native.Syscall.fsetxattr()
+            // Mono.Unix.Native.Syscall.lsetxattr
+
+            // Mono.Unix.Native.Syscall.llistxattr()
+            // Mono.Unix.Native.Syscall.flistxattr()
+            // Mono.Unix.Native.Syscall.llistxattr()
+
+            // Mono.Unix.Native.Syscall.removexattr()
+            // Mono.Unix.Native.Syscall.fremovexattr()
+            // Mono.Unix.Native.Syscall.lremovexattr()
+
+            if (System.IO.File.Exists(path))
                     System.Console.WriteLine("path exists");
                 else
                     System.Console.WriteLine("path doesn't exists");

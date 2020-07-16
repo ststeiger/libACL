@@ -1,7 +1,15 @@
 
 namespace libACL
 {
-    
+
+    // TODO: type ?
+    public enum mode_t 
+    : int
+    {
+        foobar
+    }
+
+
     // acl_check error codes
     public enum acl_check_errors
         : int

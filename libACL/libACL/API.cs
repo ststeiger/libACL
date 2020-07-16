@@ -47,8 +47,32 @@ namespace libACL
             
             return new acl_t(ptr);
         } // End Function AclGetFile 
-        
-        
+
+
+        /// <summary>
+        /// The acl_get_fd() function retrieves the access ACL associated with the file referred to by fd. The ACL is placed into working storage and acl_get_fd() returns a pointer to that storage.
+        /// </summary>
+        /// <param name="fd">On success, this function shall return a pointer to the working storage. On error, a value of (acl_t)NULL shall be returned, and errno is set appropriately.</param>
+        /// <returns></returns>
+        public static acl_t AclGetFd(int fd)
+        {
+            System.IntPtr ptr = NativeMethods.acl_get_fd(fd);
+            if (ptr == System.IntPtr.Zero)
+            {
+                // return null;
+                System.Console.Error.WriteLine("Error on AclGetFd");
+
+                Mono.Unix.Native.Errno er = Mono.Unix.Native.Stdlib.GetLastError();
+                string message = Mono.Unix.Native.Stdlib.strerror(er);
+
+                // throw ACLManagerException(Glib::locale_to_utf8(strerror(errno)));
+                throw new System.InvalidOperationException(message);
+            } // End if (ptr == System.IntPtr.Zero) 
+
+            return new acl_t(ptr);
+        } // End Function AclGetFd 
+
+
         /// <summary>
         ///  set an ACL by filename
         /// </summary>
@@ -73,8 +97,53 @@ namespace libACL
             } // End if (ret != 0) 
             
         } // End Sub AclSetFile 
-        
-        
+
+
+        /// <summary>
+        /// The acl_delete_def_file() function deletes a default ACL from the directory whose pathname is pointed to by the argument path_p.
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns>The acl_delete_def_file() function returns the value 0 if successful; otherwise the value -1 is returned and the global variable errno is set to indicate the error.</returns>
+        public static void AclDeleteDefFile(string path)
+        {
+            int ret = NativeMethods.acl_delete_def_file(path);
+
+            if (ret == -1)
+            {
+                System.Console.Error.WriteLine("Error on AclDeleteDefFile");
+
+                Mono.Unix.Native.Errno er = Mono.Unix.Native.Stdlib.GetLastError();
+                string message = Mono.Unix.Native.Stdlib.strerror(er);
+
+                // throw ACLManagerException(Glib::locale_to_utf8(strerror(errno)));
+                throw new System.InvalidOperationException(message);
+            } // End if (ret != 0) 
+
+        } // End Sub AclDeleteDefFile 
+
+
+        /// <summary>
+        /// The acl_set_fd() function associates an access ACL with the file referred to by fd.
+        /// </summary>
+        /// <param name="fd"></param>
+        /// <returns>The acl_set_fd() function returns the value 0 if successful; otherwise the value -1 is returned and the global variable errno is set to indicate the error.</returns>
+        public static void AclSetFd(int fd, acl_t acl)
+        {
+            int ret = NativeMethods.acl_set_fd(fd, acl.Native);
+            if (ret == -1)
+            {
+                System.Console.Error.WriteLine("Error on AclSetFd");
+
+                Mono.Unix.Native.Errno er = Mono.Unix.Native.Stdlib.GetLastError();
+                string message = Mono.Unix.Native.Stdlib.strerror(er);
+
+                // throw ACLManagerException(Glib::locale_to_utf8(strerror(errno)));
+                throw new System.InvalidOperationException(message);
+            } // End if (ret != 0) 
+
+        } // End Function AclSetFd 
+
+
         /// <summary>
         /// test for information in ACLs by file name
         /// </summary>
@@ -83,22 +152,45 @@ namespace libACL
         public static bool AclExtendedFile(string path)
         {
             int ret = NativeMethods.acl_extended_file(path);
-            
-            if(ret == -1)
+
+            if (ret == -1)
             {
-                System.Console.Error.WriteLine("Error on AclSetFile");
-                
+                System.Console.Error.WriteLine("Error on AclExtendedFile");
+
                 Mono.Unix.Native.Errno er = Mono.Unix.Native.Stdlib.GetLastError();
                 string message = Mono.Unix.Native.Stdlib.strerror(er);
-                
+
                 // throw ACLManagerException(Glib::locale_to_utf8(strerror(errno)));
                 throw new System.InvalidOperationException(message);
             } // End if (ret != 0) 
-            
+
             return ret == 1;
         } // End Function AclExtendedFile 
-        
-        
+
+        /// <summary>
+        /// acl_extended_file_nofollow() is identical to acl_extended_file(), except in the case of a symbolic link, where the link itself is interrogated, not the file that it refers to. Since symbolic links have no ACL themselves, the operation is supposed to fail on them.
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public static bool AclExtendedFileNofollow(string path)
+        {
+            int ret = NativeMethods.acl_extended_file_nofollow(path);
+
+            if (ret == -1)
+            {
+                System.Console.Error.WriteLine("Error on AclExtendedFileNofollow");
+
+                Mono.Unix.Native.Errno er = Mono.Unix.Native.Stdlib.GetLastError();
+                string message = Mono.Unix.Native.Stdlib.strerror(er);
+
+                // throw ACLManagerException(Glib::locale_to_utf8(strerror(errno)));
+                throw new System.InvalidOperationException(message);
+            } // End if (ret != 0) 
+
+            return ret == 1;
+        } // End Function AclExtendedFile 
+
+
         /// <summary>
         /// get an ACL entry
         /// </summary>
@@ -122,13 +214,81 @@ namespace libACL
             return ret;
         } // End Function AclGetEntry 
 
+
+        /// <summary>
+        /// The acl_from_mode() function creates a minimal ACL that contains the three entries with tag types ACL_USER_OBJ, ACL_GROUP_OBJ, and ACL_OTHER, with permissions corresponding to the owner, group, and other permission bits of its argument mode.
+        /// </summary>
+        /// <param name="mode"></param>
+        /// <returns>On success, this function returns a pointer to the working storage. On error, a value of (acl_t)NULL is returned, and errno is set appropriately.</returns>
+        public static acl_t AclFromMode(mode_t mode)
+        {
+            System.IntPtr ptr = NativeMethods.acl_from_mode(mode);
+            if (ptr == System.IntPtr.Zero)
+            {
+                // return null;
+                System.Console.Error.WriteLine("Error on AclFromMode");
+
+                Mono.Unix.Native.Errno er = Mono.Unix.Native.Stdlib.GetLastError();
+                string message = Mono.Unix.Native.Stdlib.strerror(er);
+                throw new System.InvalidOperationException(message);
+            } // End if (ptr == System.IntPtr.Zero) 
+
+            return new acl_t(ptr);
+        } // End Function AclFromMode 
+
+
+        /// <summary>
+        /// The acl_equiv_mode() function checks if the ACL pointed to by the argument acl contains only the required ACL entries of tag types ACL_USER_OBJ, ACL_GROUP_OBJ, and ACL_OTHER, and contains no permissions other that ACL_READ, ACL_WRITE or ACL_EXECUTE. If the ACL has this form, it can can be fully represented with the traditional file permission bits, and is considered equivalent with the traditional file permission bits.
+        /// </summary>
+        /// <param name="acl"></param>
+        /// <param name="mode"></param>
+        /// <returns>On success, this function returns the value 0 if acl is an equivalent ACL, and the value 1 if acl is not an equivalent ACL. On error, the value -1 is returned, and errno is set appropriately.</returns>
+        public static void AclEquivMode(acl_t acl, ref mode_t mode)
+        {
+            int ret = NativeMethods.acl_equiv_mode( acl.Native, ref mode);
+            if (ret == -1)
+            {
+                // return null;
+                System.Console.Error.WriteLine("Error on AclEquivMode");
+
+                Mono.Unix.Native.Errno er = Mono.Unix.Native.Stdlib.GetLastError();
+                string message = Mono.Unix.Native.Stdlib.strerror(er);
+                throw new System.InvalidOperationException(message);
+            } // End if (ret == -1)
+
+        } // End Sub AclEquivMode 
+
+
+
+        /// <summary>
+        /// The acl_init() function allocates and initializes the working storage for an ACL of at least count ACL entries. The ACL created initially contains no ACL entries. A pointer to the working storage is returned.
+        /// </summary>
+        /// <param name="count"></param>
+        /// <returns>On success, this function returns a pointer to the working storage. On error, a value of (acl_t)NULL is returned, and errno is set appropriately.</returns>
+        public static acl_t AclInit(int count)
+        {
+            System.IntPtr ptr = NativeMethods.acl_init(count);
+            if (ptr == System.IntPtr.Zero)
+            {
+                // return null;
+                System.Console.Error.WriteLine("Error on AclInit");
+
+                Mono.Unix.Native.Errno er = Mono.Unix.Native.Stdlib.GetLastError();
+                string message = Mono.Unix.Native.Stdlib.strerror(er);
+                throw new System.InvalidOperationException(message);
+            } // End if (ptr == System.IntPtr.Zero) 
+
+            return new acl_t(ptr);
+        } // End Function AclInit 
+
+
         /// <summary>
         /// The acl_create_entry() function creates a new ACL entry in the ACL pointed to by the contents of the pointer argument acl. On success, the function returns a descriptor for the new ACL entry via entry.
         /// </summary>
         /// <param name="acl"></param>
         /// <param name="entry"></param>
         /// <returns>The acl_create_entry() function returns the value 0 if successful; otherwise the value -1 is returned and the global variable errno is set to indicate the error.</returns>
-        public static int AclCreateEntry(acl_t acl, acl_entry_t entry)
+        public static void AclCreateEntry(acl_t acl, acl_entry_t entry)
         {
             int ret = NativeMethods.acl_create_entry(ref acl.Native, ref  entry.Native);
             if (ret == -1) 
@@ -141,9 +301,54 @@ namespace libACL
                 throw new System.InvalidOperationException(message);
             } // End if (ret == -1)  
             
-            return ret;
         } // End Function AclCreateEntry 
-        
+
+
+        /// <summary>
+        /// The acl_delete_entry() function removes the ACL entry indicated by the entry_d descriptor from the ACL pointed to by acl. Any existing ACL entry descriptors that refer to entries in acl other than that referred to by entry_d continue to refer to the same entries. The argument entry_d and any other ACL entry descriptors that refer to the same ACL entry are undefined after this function completes. Any existing ACL pointers that refer to the ACL referred to by acl continue to refer to the ACL
+        /// </summary>
+        /// <param name="acl"></param>
+        /// <param name="entry"></param>
+        /// /// <returns>The acl_delete_entry() function returns the value 0 if successful; otherwise the value -1 is returned and the global variable errno is set to indicate the error.</returns>
+        public static void AclDeleteEntry(acl_t acl, acl_entry_t entry)
+        {
+            int ret = NativeMethods.acl_delete_entry(acl.Native, entry.Native);
+            if (ret == -1)
+            {
+                // return null;
+                System.Console.Error.WriteLine("Error on AclDeleteEntry");
+
+                Mono.Unix.Native.Errno er = Mono.Unix.Native.Stdlib.GetLastError();
+                string message = Mono.Unix.Native.Stdlib.strerror(er);
+                throw new System.InvalidOperationException(message);
+            } // End if (ret == -1)  
+
+        } // End Sub AclDeleteEntry 
+
+
+        /// <summary>
+        /// The acl_copy_entry() function copies the contents of the ACL entry indicated by the src descriptor to the existing ACL entry indicated by the dest descriptor. The src and dest descriptors may refer to entries in different ACLs.
+        /// </summary>
+        /// <param name="dest"></param>
+        /// <param name="src"></param>
+        /// <returns>The acl_copy_entry() function returns the value 0 if successful; otherwise the value -1 is returned and the global variable errno is set to indicate the error.</returns>
+        public static void AclCopyEntry(acl_entry_t dest, acl_entry_t src)
+        {
+            int ret = NativeMethods.acl_copy_entry(dest.Native, src.Native);
+            if (ret == -1)
+            {
+                // return null;
+                System.Console.Error.WriteLine("Error on AclCopyEntry");
+
+                Mono.Unix.Native.Errno er = Mono.Unix.Native.Stdlib.GetLastError();
+                string message = Mono.Unix.Native.Stdlib.strerror(er);
+                throw new System.InvalidOperationException(message);
+            } // End if (ret == -1)  
+
+        } // End Function AclCopyEntry 
+
+
+
 
         /// <summary>
         /// retrieve the qualifier from an ACL entry
