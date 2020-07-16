@@ -22,8 +22,29 @@ namespace libACL
             
             return str;
         } // End Function AclError 
-        
-        
+
+
+
+        public static long AclSize(acl_t acl)
+        {
+            long ret = NativeMethods.acl_size(acl.Native);
+            if (ret == -1)
+            {
+                // return null;
+                System.Console.Error.WriteLine("Error on AclSize");
+
+                Mono.Unix.Native.Errno er = Mono.Unix.Native.Stdlib.GetLastError();
+                string message = Mono.Unix.Native.Stdlib.strerror(er);
+
+                // throw ACLManagerException(Glib::locale_to_utf8(strerror(errno)));
+                throw new System.InvalidOperationException(message);
+            } // End if (ret == -1) 
+
+            return ret;
+        } // End Function AclSize 
+
+
+
         /// <summary>
         ///  get an ACL by filename
         /// </summary>
@@ -192,6 +213,30 @@ namespace libACL
 
 
         /// <summary>
+        /// The acl_extended_fd() function returns 1 if the file identified by the argument fd is associated with an extended access ACL. The function returns 0 if the file does not have an extended access ACL.
+        /// </summary>
+        /// <param name="fd"></param>
+        /// <returns>If successful, the acl_extended_fd() function returns 1 if the file object identified by fd has an extended access ACL, and 0 if the file object identified by fd does not have an extended access ACL. Otherwise, the value -1 is returned and the global variable errno is set to indicate the error.</returns>
+        public static bool AclExtendedFd(int fd)
+        {
+            int ret = NativeMethods.acl_extended_fd(fd);
+            if (ret == -1)
+            {
+                System.Console.Error.WriteLine("Error on AclExtendedFd");
+
+                Mono.Unix.Native.Errno er = Mono.Unix.Native.Stdlib.GetLastError();
+                string message = Mono.Unix.Native.Stdlib.strerror(er);
+
+                // throw ACLManagerException(Glib::locale_to_utf8(strerror(errno)));
+                throw new System.InvalidOperationException(message);
+            } // End if (ret != 0) 
+
+            return ret == 1;
+        } // End Function AclExtendedFd 
+
+
+
+        /// <summary>
         /// get an ACL entry
         /// </summary>
         /// <param name="acl"></param>
@@ -348,6 +393,72 @@ namespace libACL
         } // End Function AclCopyEntry 
 
 
+        /// <summary>
+        /// The acl_copy_int() function copies an exportable, contiguous, persistent form of an ACL, pointed to by buf, to the internal representation.
+        /// </summary>
+        /// <param name="dest"></param>
+        /// <returns>Upon success, the acl_copy_int() function returns a pointer that references the ACL in working storage. On error, a value of (acl_t)NULL is returned, and errno is set appropriately.</returns>
+        public static acl_t AclCopyInt(System.IntPtr buf)
+        {
+            System.IntPtr ptr = NativeMethods.acl_copy_int(buf);
+            if (ptr == System.IntPtr.Zero)
+            {
+                System.Console.Error.WriteLine("Error on AclCopyInt");
+
+                Mono.Unix.Native.Errno er = Mono.Unix.Native.Stdlib.GetLastError();
+                string message = Mono.Unix.Native.Stdlib.strerror(er);
+                throw new System.InvalidOperationException(message);
+            } // End if (ret == -1)  
+
+            return new acl_t(ptr);
+        } // End Function AclCopyInt 
+
+
+
+        /// <summary>
+        /// The acl_copy_ext() function copies the ACL pointed to by acl from system-managed space to the user managed space pointed to by buf_p. 
+        /// </summary>
+        /// <param name="buf"></param>
+        /// <param name="acl"></param>
+        /// <param name="size"></param>
+        /// <returns>Upon success, this function returns the number of bytes placed in the buffer pointed to by buf_p. On error, a value of (ssize_t)-1 is returned and errno is set appropriately.</returns>
+        public static long AclCopyExt(System.IntPtr buf, acl_t acl, long size)
+        {
+            long ret = NativeMethods.acl_copy_ext(buf, acl.Native, size);
+
+            if (ret == -1)
+            {
+                System.Console.Error.WriteLine("Error on AclCopyExt");
+
+                Mono.Unix.Native.Errno er = Mono.Unix.Native.Stdlib.GetLastError();
+                string message = Mono.Unix.Native.Stdlib.strerror(er);
+                throw new System.InvalidOperationException(message);
+            } // End if (ret == -1)  
+
+            return ret;
+        } // End Function AclCopyInt 
+
+
+        /// <summary>
+        /// The acl_dup() function returns a pointer to a copy of the ACL pointed to by acl.
+        /// </summary>
+        /// <param name="acl"></param>
+        /// <returns>On success, this function returns a pointer to the working storage. On error, a value of (acl_t)NULL is returned, and errno is set appropriately.</returns>
+        public static acl_t AclDup(acl_t acl)
+        {
+            System.IntPtr ptr = NativeMethods.acl_dup(acl.Native);
+            if (ptr == System.IntPtr.Zero)
+            {
+                // return null;
+                System.Console.Error.WriteLine("Error on AclDup");
+
+                Mono.Unix.Native.Errno er = Mono.Unix.Native.Stdlib.GetLastError();
+                string message = Mono.Unix.Native.Stdlib.strerror(er);
+                throw new System.InvalidOperationException(message);
+            } // End if (ptr == System.IntPtr.Zero) 
+
+            return new acl_t(ptr);
+        } // End Function AclDup 
 
 
         /// <summary>

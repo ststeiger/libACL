@@ -12,6 +12,9 @@ namespace libACL
     // typedef struct __acl_permset_ext *acl_permset_t;
     // typedef struct __acl_entry_ext	*acl_entry_t;
     // typedef struct __acl_ext	*acl_t;
+
+
+    // https://linux.die.net/man/5/acl
     public class NativeMethods 
     {
         
@@ -23,6 +26,13 @@ namespace libACL
         [SuppressUnmanagedCodeSecurity]
         [DllImport(ACL_LIBRARY, CallingConvention = System.Runtime.InteropServices.CallingConvention.Cdecl, EntryPoint = "acl_error")]
         internal static extern string acl_error(int code);
+
+
+        // ssize_t acl_size(acl_t acl);
+        // https://linux.die.net/man/3/acl_size
+        [SuppressUnmanagedCodeSecurity]
+        [DllImport(ACL_LIBRARY, CallingConvention = System.Runtime.InteropServices.CallingConvention.Cdecl, EntryPoint = "acl_size")]
+        internal static extern long acl_size(System.IntPtr acl);
 
 
 
@@ -95,6 +105,14 @@ namespace libACL
 #endif
 
 
+        // int acl_extended_fd(int fd);
+        // https://linux.die.net/man/3/acl_extended_fd
+        [SuppressUnmanagedCodeSecurity]
+        [DllImport(ACL_LIBRARY, CallingConvention = System.Runtime.InteropServices.CallingConvention.Cdecl, EntryPoint = "acl_extended_fd")]
+        internal static extern int acl_extended_fd(int fd);
+
+
+
         // extern int acl_get_entry(acl_t acl, int entry_id, acl_entry_t *entry_p);
         // https://linux.die.net/man/3/acl_get_entry
         [SuppressUnmanagedCodeSecurity]
@@ -143,6 +161,28 @@ namespace libACL
         [SuppressUnmanagedCodeSecurity]
         [DllImport(ACL_LIBRARY, CallingConvention = System.Runtime.InteropServices.CallingConvention.Cdecl, EntryPoint = "acl_copy_entry")]
         internal static extern int acl_copy_entry(System.IntPtr dest, System.IntPtr src_d);
+
+
+        // acl_t acl_copy_int(const void* buf_p);
+        // https://linux.die.net/man/3/acl_copy_int
+        [SuppressUnmanagedCodeSecurity]
+        [DllImport(ACL_LIBRARY, CallingConvention = System.Runtime.InteropServices.CallingConvention.Cdecl, EntryPoint = "acl_copy_int")]
+        internal static extern System.IntPtr acl_copy_int(System.IntPtr buf);
+
+
+        // https://linux.die.net/man/3/acl_copy_ext
+        // ssize_t acl_copy_ext(void* buf_p, acl_t acl, ssize_t size);
+        [SuppressUnmanagedCodeSecurity]
+        [DllImport(ACL_LIBRARY, CallingConvention = System.Runtime.InteropServices.CallingConvention.Cdecl, EntryPoint = "acl_copy_ext")]
+        internal static extern long acl_copy_ext(System.IntPtr buf, System.IntPtr acl, long size);
+
+
+
+        // acl_t acl_dup(acl_t acl);
+        [SuppressUnmanagedCodeSecurity]
+        [DllImport(ACL_LIBRARY, CallingConvention = System.Runtime.InteropServices.CallingConvention.Cdecl, EntryPoint = "acl_dup")]
+        internal static extern System.IntPtr acl_dup( System.IntPtr acl);
+
 
 
         // extern void * acl_get_qualifier(acl_entry_t entry_d);
