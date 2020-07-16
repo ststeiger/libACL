@@ -6,60 +6,62 @@ namespace TestACL
 
 
     // Eiciel Access Control List Editor
+    // https://en.wikipedia.org/wiki/VDSO
     class Program
     {
 
 
-        public static void TestExtendedAttributes()
-        {
-            string path = "/root/Desktop/CppSharp.txt";
-
-            // Mono.Unix.Native.Syscall.getxattr()
-            // Mono.Unix.Native.Syscall.fgetxattr()
-            // Mono.Unix.Native.Syscall.lgetxattr()
-
-            // Mono.Unix.Native.Syscall.setxattr()
-            // Mono.Unix.Native.Syscall.fsetxattr()
-            // Mono.Unix.Native.Syscall.lsetxattr
-
-            // Mono.Unix.Native.Syscall.llistxattr()
-            // Mono.Unix.Native.Syscall.flistxattr()
-            // Mono.Unix.Native.Syscall.llistxattr()
-
-            // Mono.Unix.Native.Syscall.removexattr()
-            // Mono.Unix.Native.Syscall.fremovexattr()
-            // Mono.Unix.Native.Syscall.lremovexattr()
-
-            if (System.IO.File.Exists(path))
-                System.Console.WriteLine("path exists");
-            else
-                System.Console.WriteLine("path doesn't exists");
-
-            System.Text.Encoding enc = new System.Text.UTF8Encoding(false);
-            string[] values = null;
-
-            int setXattrSucceeded = Mono.Unix.Native.Syscall.setxattr(path, "user.foobar",
-                enc.GetBytes("Hello World äöüÄÖÜ"), Mono.Unix.Native.XattrFlags.XATTR_CREATE);
-
-            if (setXattrSucceeded == -1)
+            public static void TestExtendedAttributes()
             {
-                Mono.Unix.Native.Errno er = Mono.Unix.Native.Stdlib.GetLastError();
-                string message = Mono.Unix.Native.Stdlib.strerror(er);
-                // https://stackoverflow.com/questions/12662765/how-can-i-get-error-message-for-errno-value-c-language
-                System.Console.WriteLine(message);
-            } // End if (setXattrSucceeded == -1)
+                // https://man7.org/linux/man-pages/man7/xattr.7.html
+                string path = "/root/Desktop/CppSharp.txt";
 
-            byte[] data = null;
-            long szLen = Mono.Unix.Native.Syscall.getxattr(path, "user.foobar", out data);
+                // Mono.Unix.Native.Syscall.getxattr()
+                // Mono.Unix.Native.Syscall.fgetxattr()
+                // Mono.Unix.Native.Syscall.lgetxattr()
 
-            string value = enc.GetString(data);
-            System.Console.WriteLine(value);
+                // Mono.Unix.Native.Syscall.setxattr()
+                // Mono.Unix.Native.Syscall.fsetxattr()
+                // Mono.Unix.Native.Syscall.lsetxattr
 
-            Mono.Unix.Native.Syscall.listxattr(path, System.Text.Encoding.UTF8, out values);
-            System.Console.WriteLine(values);
+                // Mono.Unix.Native.Syscall.llistxattr()
+                // Mono.Unix.Native.Syscall.flistxattr()
+                // Mono.Unix.Native.Syscall.llistxattr()
 
-            // https://man7.org/linux/man-pages/man2/getxattr.2.html
-        } // End Sub TestExtendedAttributes 
+                // Mono.Unix.Native.Syscall.removexattr()
+                // Mono.Unix.Native.Syscall.fremovexattr()
+                // Mono.Unix.Native.Syscall.lremovexattr()
+
+                if (System.IO.File.Exists(path))
+                    System.Console.WriteLine("path exists");
+                else
+                    System.Console.WriteLine("path doesn't exists");
+
+                System.Text.Encoding enc = new System.Text.UTF8Encoding(false);
+                string[] values = null;
+
+                int setXattrSucceeded = Mono.Unix.Native.Syscall.setxattr(path, "user.foobar",
+                    enc.GetBytes("Hello World äöüÄÖÜ"), Mono.Unix.Native.XattrFlags.XATTR_CREATE);
+
+                if (setXattrSucceeded == -1)
+                {
+                    Mono.Unix.Native.Errno er = Mono.Unix.Native.Stdlib.GetLastError();
+                    string message = Mono.Unix.Native.Stdlib.strerror(er);
+                    // https://stackoverflow.com/questions/12662765/how-can-i-get-error-message-for-errno-value-c-language
+                    System.Console.WriteLine(message);
+                } // End if (setXattrSucceeded == -1)
+
+                byte[] data = null;
+                long szLen = Mono.Unix.Native.Syscall.getxattr(path, "user.foobar", out data);
+
+                string value = enc.GetString(data);
+                System.Console.WriteLine(value);
+
+                Mono.Unix.Native.Syscall.listxattr(path, System.Text.Encoding.UTF8, out values);
+                System.Console.WriteLine(values);
+
+                // https://man7.org/linux/man-pages/man2/getxattr.2.html
+            } // End Sub TestExtendedAttributes 
 
 
         public static void ListUsersAndGroup()

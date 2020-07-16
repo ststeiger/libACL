@@ -244,6 +244,9 @@ namespace libACL
         /// <returns>The acl_get_permset() function returns the value 0 if successful; otherwise the value -1 is returned and the global variable errno is set to indicate the error.</returns>
         public static acl_permset_t AclGetPermset(acl_entry_t entry)
         {
+            if(entry == null)
+                throw new System.ArgumentNullException(nameof(entry));
+            
             acl_permset_t permset = new acl_permset_t();
             
             int ret = NativeMethods.acl_get_permset(entry.Native, out permset.Native);
@@ -288,6 +291,9 @@ namespace libACL
         /// <returns>The acl_add_perm() function returns the value 0 if successful; otherwise the value -1 is returned and the global variable errno is set to indicate the error.</returns>
         public static void AclAddPerm(acl_permset_t permset, acl_perm_t perm)
         {
+            if(permset == null || permset.Native == System.IntPtr.Zero)
+                throw new System.ArgumentNullException(nameof(permset));
+            
             int ret = NativeMethods.acl_add_perm(permset.Native, perm);
             if (ret == -1)
             {
@@ -329,6 +335,9 @@ namespace libACL
         /// <exception cref="InvalidOperationException"></exception>
         public static void AclClearPerms(acl_permset_t permset)
         {
+            if(permset == null || permset.Native == System.IntPtr.Zero)
+                throw new System.ArgumentNullException(nameof(permset));
+            
             int ret = NativeMethods.acl_clear_perms(permset.Native);
             if (ret == -1)
             {
@@ -349,6 +358,9 @@ namespace libACL
         /// <returns>The acl_calc_mask() function returns the value 0 if successful; otherwise the value -1 is returned and the global variable errno is set to indicate the error.</returns>
         public static void AclCalcMask(acl_t acl)
         {
+            if(acl == null || acl.Native == System.IntPtr.Zero)
+                throw new System.ArgumentNullException(nameof(acl));
+            
             int ret = NativeMethods.acl_calc_mask(ref acl.Native);
             
             if (ret == -1)
