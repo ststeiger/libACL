@@ -3,6 +3,17 @@ namespace TestACL
 {
 
     using libACL;
+    using Mono.Unix;
+
+
+
+
+    public enum FileSystemRights
+    {
+        Read,
+        Write,
+        ExecuteFile
+    }
 
 
     // Eiciel Access Control List Editor
@@ -11,10 +22,85 @@ namespace TestACL
     {
 
 
-            public static void TestExtendedAttributes()
+
+        public static void TestUserFileSystemInfo()
+        {
+            // Mono.Unix.UnixUserInfo ui = new Mono.Unix.UnixUserInfo(123);
+            // Mono.Unix.UnixGroupInfo gi = new Mono.Unix.UnixGroupInfo(123);
+            // Mono.Unix.UnixDriveInfo drv = new Mono.Unix.UnixDriveInfo("/");
+            // Mono.Unix.UnixSymbolicLinkInfo si = new Mono.Unix.UnixSymbolicLinkInfo("");
+
+            // Mono.Unix.UnixDirectoryInfo di = new Mono.Unix.UnixDirectoryInfo("");
+            // Mono.Unix.UnixFileInfo fi = new Mono.Unix.UnixFileInfo("test.txt");
+
+            Mono.Unix.UnixFileSystemInfo fsi = Mono.Unix.UnixFileSystemInfo.GetFileSystemEntry("path");
+        }
+
+
+        public static bool TestAccessACL(System.IO.DirectoryInfo di, FileSystemRights AccessRight)
+        {
+            Mono.Unix.UnixFileInfo unixFileInfo = new Mono.Unix.UnixFileInfo("test.txt");
+            // set file permission to 644
+            unixFileInfo.FileAccessPermissions =
+                Mono.Unix.FileAccessPermissions.UserRead | Mono.Unix.FileAccessPermissions.UserWrite
+                | Mono.Unix.FileAccessPermissions.GroupRead
+                | Mono.Unix.FileAccessPermissions.OtherRead;
+
+
+            // https://www.geeksforgeeks.org/access-control-listsacl-linux/
+            // https://www.tecmint.com/secure-files-using-acls-in-linux/
+
+            // grep -i acl /boot/config*
+            // nm -D /lib/x86_64-linux-gnu/libacl.so.1 | grep "acl"
+
+            // [on RedHat based systems]
+            // yum install nfs4-acl-tools acl libacl
+            // [on Debian based systems]
+            // sudo apt-get install nfs4-acl-tools acl
+
+            // cat /proc/mounts
+            // df -h | grep " /$"
+            // mount | grep -i root
+            // ==>
+            // mount | grep `df -h | grep " /$" | awk '{print $1}'`
+            // tune2fs -l /dev/nvme0n1p2 | grep acl
+            // Mono.Unix.Native.Passwd ent = Mono.Unix.Native.Syscall.getpwent();
+            // Mono.Unix.Native.Syscall.getgrouplist()
+
+
+            if (AccessRight == FileSystemRights.Read)
             {
-                // https://man7.org/linux/man-pages/man7/xattr.7.html
-                string path = "/root/Desktop/CppSharp.txt";
+                Mono.Unix.UnixDirectoryInfo unixDirectoryInfo = new Mono.Unix.UnixDirectoryInfo(di.FullName);
+                return (unixDirectoryInfo.FileAccessPermissions.HasFlag(FileAccessPermissions.UserRead)
+                        || unixDirectoryInfo.FileAccessPermissions.HasFlag(FileAccessPermissions.GroupRead)
+                        || unixDirectoryInfo.FileAccessPermissions.HasFlag(FileAccessPermissions.OtherRead)
+                    );
+            }
+            else if (AccessRight == FileSystemRights.Write)
+            {
+                Mono.Unix.UnixDirectoryInfo unixDirectoryInfo = new Mono.Unix.UnixDirectoryInfo(di.FullName);
+                return (unixDirectoryInfo.FileAccessPermissions.HasFlag(FileAccessPermissions.UserWrite)
+                        || unixDirectoryInfo.FileAccessPermissions.HasFlag(FileAccessPermissions.GroupWrite)
+                        || unixDirectoryInfo.FileAccessPermissions.HasFlag(FileAccessPermissions.OtherWrite)
+                    );
+            }
+            else if (AccessRight == FileSystemRights.ExecuteFile)
+            {
+                Mono.Unix.UnixDirectoryInfo unixDirectoryInfo = new Mono.Unix.UnixDirectoryInfo(di.FullName);
+                return (unixDirectoryInfo.FileAccessPermissions.HasFlag(FileAccessPermissions.UserExecute)
+                        || unixDirectoryInfo.FileAccessPermissions.HasFlag(FileAccessPermissions.GroupExecute)
+                        || unixDirectoryInfo.FileAccessPermissions.HasFlag(FileAccessPermissions.OtherExecute)
+                    );
+            }
+
+            return false;
+        }
+
+
+        public static void TestExtendedAttributes()
+        {
+            // https://man7.org/linux/man-pages/man7/xattr.7.html
+            string path = "/root/Desktop/CppSharp.txt";
 
             // https:// linux.die.net/man/2/access
             // https:// linux.die.net/man/1/kpseaccess
@@ -45,35 +131,35 @@ namespace TestACL
             // Mono.Unix.Native.Syscall.lremovexattr()
 
             if (System.IO.File.Exists(path))
-                    System.Console.WriteLine("path exists");
-                else
-                    System.Console.WriteLine("path doesn't exists");
+                System.Console.WriteLine("path exists");
+            else
+                System.Console.WriteLine("path doesn't exists");
 
-                System.Text.Encoding enc = new System.Text.UTF8Encoding(false);
-                string[] values = null;
+            System.Text.Encoding enc = new System.Text.UTF8Encoding(false);
+            string[] values = null;
 
-                int setXattrSucceeded = Mono.Unix.Native.Syscall.setxattr(path, "user.foobar",
-                    enc.GetBytes("Hello World äöüÄÖÜ"), Mono.Unix.Native.XattrFlags.XATTR_CREATE);
+            int setXattrSucceeded = Mono.Unix.Native.Syscall.setxattr(path, "user.foobar",
+                enc.GetBytes("Hello World äöüÄÖÜ"), Mono.Unix.Native.XattrFlags.XATTR_CREATE);
 
-                if (setXattrSucceeded == -1)
-                {
-                    Mono.Unix.Native.Errno er = Mono.Unix.Native.Stdlib.GetLastError();
-                    string message = Mono.Unix.Native.Stdlib.strerror(er);
-                    // https://stackoverflow.com/questions/12662765/how-can-i-get-error-message-for-errno-value-c-language
-                    System.Console.WriteLine(message);
-                } // End if (setXattrSucceeded == -1)
+            if (setXattrSucceeded == -1)
+            {
+                Mono.Unix.Native.Errno er = Mono.Unix.Native.Stdlib.GetLastError();
+                string message = Mono.Unix.Native.Stdlib.strerror(er);
+                // https://stackoverflow.com/questions/12662765/how-can-i-get-error-message-for-errno-value-c-language
+                System.Console.WriteLine(message);
+            } // End if (setXattrSucceeded == -1)
 
-                byte[] data = null;
-                long szLen = Mono.Unix.Native.Syscall.getxattr(path, "user.foobar", out data);
+            byte[] data = null;
+            long szLen = Mono.Unix.Native.Syscall.getxattr(path, "user.foobar", out data);
 
-                string value = enc.GetString(data);
-                System.Console.WriteLine(value);
+            string value = enc.GetString(data);
+            System.Console.WriteLine(value);
 
-                Mono.Unix.Native.Syscall.listxattr(path, System.Text.Encoding.UTF8, out values);
-                System.Console.WriteLine(values);
+            Mono.Unix.Native.Syscall.listxattr(path, System.Text.Encoding.UTF8, out values);
+            System.Console.WriteLine(values);
 
-                // https://man7.org/linux/man-pages/man2/getxattr.2.html
-            } // End Sub TestExtendedAttributes 
+            // https://man7.org/linux/man-pages/man2/getxattr.2.html
+        } // End Sub TestExtendedAttributes 
 
 
         public static void ListUsersAndGroup()
@@ -278,7 +364,7 @@ namespace TestACL
         static void Main(string[] args)
         {
             Test2.Test();
-            
+
             // https://linux.die.net/man/2/access
             Mono.Unix.Native.Syscall.access("path", Mono.Unix.Native.AccessModes.F_OK | Mono.Unix.Native.AccessModes.R_OK);
             // https://linux.die.net/man/2/faccessat
