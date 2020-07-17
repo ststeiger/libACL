@@ -13,7 +13,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Mono.Posix.NETStandard" Version="5.20.1-preview" />
+    <Compile Remove="libACL\Unix\FileNameMarshaler.cs" />
+    <Compile Remove="libACL\Unix\UnixEncoding.cs" />
+    <Compile Remove="libACL\Unix\UnixIOException.cs" />
+    <Compile Remove="libACL\Unix\UnixMarshal.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="libACL\Unix\" />
   </ItemGroup>
 
 </Project>

@@ -1,16 +1,14 @@
 
-using System.Net.Http.Headers;
-
-namespace libACL 
+namespace libACL
 {
 
-    using System.Runtime.InteropServices; 
-    
-    
+    using System.Runtime.InteropServices;
+
+
     public class API
     {
-        
-        
+
+
         /// <summary>
         /// The acl_error() function converts an ACL error code such as returned by the acl_check() function to a text message describing the error condition. In the "POSIX" locale, acl_check() returns the following descriptions for the error codes.
         /// </summary>
@@ -19,10 +17,9 @@ namespace libACL
         public static string AclError(int code)
         {
             string str = NativeMethods.acl_error(code);
-            
+
             return str;
         } // End Function AclError 
-
 
 
         public static long AclSize(acl_t acl)
@@ -32,17 +29,11 @@ namespace libACL
             {
                 // return null;
                 System.Console.Error.WriteLine("Error on AclSize");
-
-                Mono.Unix.Native.Errno er = Mono.Unix.Native.Stdlib.GetLastError();
-                string message = Mono.Unix.Native.Stdlib.strerror(er);
-
-                // throw ACLManagerException(Glib::locale_to_utf8(strerror(errno)));
-                throw new System.InvalidOperationException(message);
+                throw new System.InvalidOperationException(NativeMethods.ErrorMessage);
             } // End if (ret == -1) 
 
             return ret;
         } // End Function AclSize 
-
 
 
         /// <summary>
@@ -58,14 +49,9 @@ namespace libACL
             {
                 // return null;
                 System.Console.Error.WriteLine("Error on AclSetFile");
-                
-                Mono.Unix.Native.Errno er = Mono.Unix.Native.Stdlib.GetLastError();
-                string message = Mono.Unix.Native.Stdlib.strerror(er);
-                
-                // throw ACLManagerException(Glib::locale_to_utf8(strerror(errno)));
-                throw new System.InvalidOperationException(message);
+                throw new System.InvalidOperationException(NativeMethods.ErrorMessage);
             } // End if (ptr == System.IntPtr.Zero) 
-            
+
             return new acl_t(ptr);
         } // End Function AclGetFile 
 
@@ -82,12 +68,7 @@ namespace libACL
             {
                 // return null;
                 System.Console.Error.WriteLine("Error on AclGetFd");
-
-                Mono.Unix.Native.Errno er = Mono.Unix.Native.Stdlib.GetLastError();
-                string message = Mono.Unix.Native.Stdlib.strerror(er);
-
-                // throw ACLManagerException(Glib::locale_to_utf8(strerror(errno)));
-                throw new System.InvalidOperationException(message);
+                throw new System.InvalidOperationException(NativeMethods.ErrorMessage);
             } // End if (ptr == System.IntPtr.Zero) 
 
             return new acl_t(ptr);
@@ -105,18 +86,13 @@ namespace libACL
         public static void AclSetFile(string path, acl_type_t type, acl_t acl)
         {
             int ret = NativeMethods.acl_set_file(path, type, acl.Native);
-            
+
             if (ret != 0)
             {
                 System.Console.Error.WriteLine("Error on AclSetFile");
-                
-                Mono.Unix.Native.Errno er = Mono.Unix.Native.Stdlib.GetLastError();
-                string message = Mono.Unix.Native.Stdlib.strerror(er);
-                
-                // throw ACLManagerException(Glib::locale_to_utf8(strerror(errno)));
-                throw new System.InvalidOperationException(message);
+                throw new System.InvalidOperationException(NativeMethods.ErrorMessage);
             } // End if (ret != 0) 
-            
+
         } // End Sub AclSetFile 
 
 
@@ -132,12 +108,7 @@ namespace libACL
             if (ret == -1)
             {
                 System.Console.Error.WriteLine("Error on AclDeleteDefFile");
-
-                Mono.Unix.Native.Errno er = Mono.Unix.Native.Stdlib.GetLastError();
-                string message = Mono.Unix.Native.Stdlib.strerror(er);
-
-                // throw ACLManagerException(Glib::locale_to_utf8(strerror(errno)));
-                throw new System.InvalidOperationException(message);
+                throw new System.InvalidOperationException(NativeMethods.ErrorMessage);
             } // End if (ret != 0) 
 
         } // End Sub AclDeleteDefFile 
@@ -154,12 +125,7 @@ namespace libACL
             if (ret == -1)
             {
                 System.Console.Error.WriteLine("Error on AclSetFd");
-
-                Mono.Unix.Native.Errno er = Mono.Unix.Native.Stdlib.GetLastError();
-                string message = Mono.Unix.Native.Stdlib.strerror(er);
-
-                // throw ACLManagerException(Glib::locale_to_utf8(strerror(errno)));
-                throw new System.InvalidOperationException(message);
+                throw new System.InvalidOperationException(NativeMethods.ErrorMessage);
             } // End if (ret != 0) 
 
         } // End Function AclSetFd 
@@ -177,16 +143,12 @@ namespace libACL
             if (ret == -1)
             {
                 System.Console.Error.WriteLine("Error on AclExtendedFile");
-
-                Mono.Unix.Native.Errno er = Mono.Unix.Native.Stdlib.GetLastError();
-                string message = Mono.Unix.Native.Stdlib.strerror(er);
-
-                // throw ACLManagerException(Glib::locale_to_utf8(strerror(errno)));
-                throw new System.InvalidOperationException(message);
+                throw new System.InvalidOperationException(NativeMethods.ErrorMessage);
             } // End if (ret != 0) 
 
             return ret == 1;
         } // End Function AclExtendedFile 
+
 
         /// <summary>
         /// acl_extended_file_nofollow() is identical to acl_extended_file(), except in the case of a symbolic link, where the link itself is interrogated, not the file that it refers to. Since symbolic links have no ACL themselves, the operation is supposed to fail on them.
@@ -200,12 +162,7 @@ namespace libACL
             if (ret == -1)
             {
                 System.Console.Error.WriteLine("Error on AclExtendedFileNofollow");
-
-                Mono.Unix.Native.Errno er = Mono.Unix.Native.Stdlib.GetLastError();
-                string message = Mono.Unix.Native.Stdlib.strerror(er);
-
-                // throw ACLManagerException(Glib::locale_to_utf8(strerror(errno)));
-                throw new System.InvalidOperationException(message);
+                throw new System.InvalidOperationException(NativeMethods.ErrorMessage);
             } // End if (ret != 0) 
 
             return ret == 1;
@@ -223,17 +180,11 @@ namespace libACL
             if (ret == -1)
             {
                 System.Console.Error.WriteLine("Error on AclExtendedFd");
-
-                Mono.Unix.Native.Errno er = Mono.Unix.Native.Stdlib.GetLastError();
-                string message = Mono.Unix.Native.Stdlib.strerror(er);
-
-                // throw ACLManagerException(Glib::locale_to_utf8(strerror(errno)));
-                throw new System.InvalidOperationException(message);
+                throw new System.InvalidOperationException(NativeMethods.ErrorMessage);
             } // End if (ret != 0) 
 
             return ret == 1;
         } // End Function AclExtendedFd 
-
 
 
         /// <summary>
@@ -246,16 +197,13 @@ namespace libACL
         public static int AclGetEntry(acl_t acl, AclEntryConstants entry_id, acl_entry_t entry)
         {
             int ret = NativeMethods.acl_get_entry(acl.Native, entry_id, out entry.Native);
-            if (ret == -1) 
+            if (ret == -1)
             {
                 // return null;
                 System.Console.Error.WriteLine("Error on AclGetEntry");
-                
-                Mono.Unix.Native.Errno er = Mono.Unix.Native.Stdlib.GetLastError();
-                string message = Mono.Unix.Native.Stdlib.strerror(er);
-                throw new System.InvalidOperationException(message);
+                throw new System.InvalidOperationException(NativeMethods.ErrorMessage);
             } // End if (ret == -1)  
-            
+
             return ret;
         } // End Function AclGetEntry 
 
@@ -272,10 +220,7 @@ namespace libACL
             {
                 // return null;
                 System.Console.Error.WriteLine("Error on AclFromMode");
-
-                Mono.Unix.Native.Errno er = Mono.Unix.Native.Stdlib.GetLastError();
-                string message = Mono.Unix.Native.Stdlib.strerror(er);
-                throw new System.InvalidOperationException(message);
+                throw new System.InvalidOperationException(NativeMethods.ErrorMessage);
             } // End if (ptr == System.IntPtr.Zero) 
 
             return new acl_t(ptr);
@@ -290,19 +235,15 @@ namespace libACL
         /// <returns>On success, this function returns the value 0 if acl is an equivalent ACL, and the value 1 if acl is not an equivalent ACL. On error, the value -1 is returned, and errno is set appropriately.</returns>
         public static void AclEquivMode(acl_t acl, ref mode_t mode)
         {
-            int ret = NativeMethods.acl_equiv_mode( acl.Native, ref mode);
+            int ret = NativeMethods.acl_equiv_mode(acl.Native, ref mode);
             if (ret == -1)
             {
                 // return null;
                 System.Console.Error.WriteLine("Error on AclEquivMode");
-
-                Mono.Unix.Native.Errno er = Mono.Unix.Native.Stdlib.GetLastError();
-                string message = Mono.Unix.Native.Stdlib.strerror(er);
-                throw new System.InvalidOperationException(message);
+                throw new System.InvalidOperationException(NativeMethods.ErrorMessage);
             } // End if (ret == -1)
 
         } // End Sub AclEquivMode 
-
 
 
         /// <summary>
@@ -317,10 +258,7 @@ namespace libACL
             {
                 // return null;
                 System.Console.Error.WriteLine("Error on AclInit");
-
-                Mono.Unix.Native.Errno er = Mono.Unix.Native.Stdlib.GetLastError();
-                string message = Mono.Unix.Native.Stdlib.strerror(er);
-                throw new System.InvalidOperationException(message);
+                throw new System.InvalidOperationException(NativeMethods.ErrorMessage);
             } // End if (ptr == System.IntPtr.Zero) 
 
             return new acl_t(ptr);
@@ -335,17 +273,14 @@ namespace libACL
         /// <returns>The acl_create_entry() function returns the value 0 if successful; otherwise the value -1 is returned and the global variable errno is set to indicate the error.</returns>
         public static void AclCreateEntry(acl_t acl, acl_entry_t entry)
         {
-            int ret = NativeMethods.acl_create_entry(ref acl.Native, ref  entry.Native);
-            if (ret == -1) 
+            int ret = NativeMethods.acl_create_entry(ref acl.Native, ref entry.Native);
+            if (ret == -1)
             {
                 // return null;
                 System.Console.Error.WriteLine("Error on AclCreateEntry");
-                
-                Mono.Unix.Native.Errno er = Mono.Unix.Native.Stdlib.GetLastError();
-                string message = Mono.Unix.Native.Stdlib.strerror(er);
-                throw new System.InvalidOperationException(message);
+                throw new System.InvalidOperationException(NativeMethods.ErrorMessage);
             } // End if (ret == -1)  
-            
+
         } // End Function AclCreateEntry 
 
 
@@ -362,10 +297,7 @@ namespace libACL
             {
                 // return null;
                 System.Console.Error.WriteLine("Error on AclDeleteEntry");
-
-                Mono.Unix.Native.Errno er = Mono.Unix.Native.Stdlib.GetLastError();
-                string message = Mono.Unix.Native.Stdlib.strerror(er);
-                throw new System.InvalidOperationException(message);
+                throw new System.InvalidOperationException(NativeMethods.ErrorMessage);
             } // End if (ret == -1)  
 
         } // End Sub AclDeleteEntry 
@@ -384,10 +316,7 @@ namespace libACL
             {
                 // return null;
                 System.Console.Error.WriteLine("Error on AclCopyEntry");
-
-                Mono.Unix.Native.Errno er = Mono.Unix.Native.Stdlib.GetLastError();
-                string message = Mono.Unix.Native.Stdlib.strerror(er);
-                throw new System.InvalidOperationException(message);
+                throw new System.InvalidOperationException(NativeMethods.ErrorMessage);
             } // End if (ret == -1)  
 
         } // End Function AclCopyEntry 
@@ -404,15 +333,11 @@ namespace libACL
             if (ptr == System.IntPtr.Zero)
             {
                 System.Console.Error.WriteLine("Error on AclCopyInt");
-
-                Mono.Unix.Native.Errno er = Mono.Unix.Native.Stdlib.GetLastError();
-                string message = Mono.Unix.Native.Stdlib.strerror(er);
-                throw new System.InvalidOperationException(message);
+                throw new System.InvalidOperationException(NativeMethods.ErrorMessage);
             } // End if (ret == -1)  
 
             return new acl_t(ptr);
         } // End Function AclCopyInt 
-
 
 
         /// <summary>
@@ -429,10 +354,7 @@ namespace libACL
             if (ret == -1)
             {
                 System.Console.Error.WriteLine("Error on AclCopyExt");
-
-                Mono.Unix.Native.Errno er = Mono.Unix.Native.Stdlib.GetLastError();
-                string message = Mono.Unix.Native.Stdlib.strerror(er);
-                throw new System.InvalidOperationException(message);
+                throw new System.InvalidOperationException(NativeMethods.ErrorMessage);
             } // End if (ret == -1)  
 
             return ret;
@@ -451,10 +373,7 @@ namespace libACL
             {
                 // return null;
                 System.Console.Error.WriteLine("Error on AclDup");
-
-                Mono.Unix.Native.Errno er = Mono.Unix.Native.Stdlib.GetLastError();
-                string message = Mono.Unix.Native.Stdlib.strerror(er);
-                throw new System.InvalidOperationException(message);
+                throw new System.InvalidOperationException(NativeMethods.ErrorMessage);
             } // End if (ptr == System.IntPtr.Zero) 
 
             return new acl_t(ptr);
@@ -473,15 +392,13 @@ namespace libACL
             {
                 // return null;
                 System.Console.Error.WriteLine("Error on AclGetQualifier");
-                
-                Mono.Unix.Native.Errno er = Mono.Unix.Native.Stdlib.GetLastError();
-                string message = Mono.Unix.Native.Stdlib.strerror(er);
-                throw new System.InvalidOperationException(message);
+                throw new System.InvalidOperationException(NativeMethods.ErrorMessage);
             } // End if (ptr == System.IntPtr.Zero) 
-            
+
             return new AclQualifier(ptr);
         } // End Function AclGetQualifier 
-        
+
+
         // int acl_set_qualifier(acl_entry_t entry_d, const void *qualifier_p);
         /// <summary>
         /// The acl_set_qualifier() function sets the qualifier of the ACL entry indicated by the argument entry_d to the value referred to by the argument qualifier_p.
@@ -495,15 +412,10 @@ namespace libACL
             if (ret == -1)
             {
                 System.Console.Error.WriteLine("Error on AclSetQualifier");
-                
-                Mono.Unix.Native.Errno er = Mono.Unix.Native.Stdlib.GetLastError();
-                string message = Mono.Unix.Native.Stdlib.strerror(er);
-                throw new System.InvalidOperationException(message);
+                throw new System.InvalidOperationException(NativeMethods.ErrorMessage);
             } // End if (ret == -1)
-            
+
         } // End Function AclSetQualifier 
-
-
 
 
         /// <summary>
@@ -515,19 +427,17 @@ namespace libACL
         public static acl_tag_t AclGetTagType(acl_entry_t entry)
         {
             acl_tag_t tag_type;
-            
+
             int ret = NativeMethods.acl_get_tag_type(entry.Native, out tag_type);
             if (ret == -1)
             {
                 System.Console.Error.WriteLine("Error on AclGetTagType");
-                
-                Mono.Unix.Native.Errno er = Mono.Unix.Native.Stdlib.GetLastError();
-                string message = Mono.Unix.Native.Stdlib.strerror(er);
-                throw new System.InvalidOperationException(message);
+                throw new System.InvalidOperationException(NativeMethods.ErrorMessage);
             } // End if (ret == -1) 
-            
+
             return tag_type;
         } // End Function AclGetTagType 
+
 
         /// <summary>
         /// The acl_set_tag_type() function sets the tag type of the ACL entry indicated by the argument entry_d to the value of the argument tag_type.
@@ -542,14 +452,10 @@ namespace libACL
             if (ret == -1)
             {
                 System.Console.Error.WriteLine("Error on AclSetTagType");
-                
-                Mono.Unix.Native.Errno er = Mono.Unix.Native.Stdlib.GetLastError();
-                string message = Mono.Unix.Native.Stdlib.strerror(er);
-                throw new System.InvalidOperationException(message);
+                throw new System.InvalidOperationException(NativeMethods.ErrorMessage);
             } // End if (ret == -1) 
-            
-        } // End Function AclSetTagType 
 
+        } // End Function AclSetTagType 
 
 
         /// <summary>
@@ -560,24 +466,22 @@ namespace libACL
         /// <returns>The acl_get_permset() function returns the value 0 if successful; otherwise the value -1 is returned and the global variable errno is set to indicate the error.</returns>
         public static acl_permset_t AclGetPermset(acl_entry_t entry)
         {
-            if(entry == null)
+            if (entry == null)
                 throw new System.ArgumentNullException(nameof(entry));
-            
+
             acl_permset_t permset = new acl_permset_t();
-            
+
             int ret = NativeMethods.acl_get_permset(entry.Native, out permset.Native);
             if (ret == -1)
             {
                 System.Console.Error.WriteLine("Error on AclGetPermset");
-                
-                Mono.Unix.Native.Errno er = Mono.Unix.Native.Stdlib.GetLastError();
-                string message = Mono.Unix.Native.Stdlib.strerror(er);
-                throw new System.InvalidOperationException(message);
+                throw new System.InvalidOperationException(NativeMethods.ErrorMessage);
             } // End if (ret ==  -1) 
-            
+
             return permset;
         } // End Sub AclGetPermset 
-        
+
+
         /// <summary>
         /// 
         /// </summary>
@@ -590,15 +494,12 @@ namespace libACL
             if (ret == -1)
             {
                 System.Console.Error.WriteLine("Error on AclSetPermset");
-                
-                Mono.Unix.Native.Errno er = Mono.Unix.Native.Stdlib.GetLastError();
-                string message = Mono.Unix.Native.Stdlib.strerror(er);
-                throw new System.InvalidOperationException(message);
+                throw new System.InvalidOperationException(NativeMethods.ErrorMessage);
             } // End if (ret ==  -1) 
-            
+
         } // End Sub AclSetPermset 
-        
-        
+
+
         /// <summary>
         /// add a permission to an ACL permission set
         /// </summary>
@@ -607,22 +508,19 @@ namespace libACL
         /// <returns>The acl_add_perm() function returns the value 0 if successful; otherwise the value -1 is returned and the global variable errno is set to indicate the error.</returns>
         public static void AclAddPerm(acl_permset_t permset, acl_perm_t perm)
         {
-            if(permset == null || permset.Native == System.IntPtr.Zero)
+            if (permset == null || permset.Native == System.IntPtr.Zero)
                 throw new System.ArgumentNullException(nameof(permset));
-            
+
             int ret = NativeMethods.acl_add_perm(permset.Native, perm);
             if (ret == -1)
             {
                 System.Console.Error.WriteLine("Error on AclAddPerm");
-                
-                Mono.Unix.Native.Errno er = Mono.Unix.Native.Stdlib.GetLastError();
-                string message = Mono.Unix.Native.Stdlib.strerror(er);
-                throw new System.InvalidOperationException(message);
+                throw new System.InvalidOperationException(NativeMethods.ErrorMessage);
             } // End if (ret ==  -1) 
-            
+
         } // End Function AclAddPerm 
-        
-        
+
+
         /// <summary>
         /// The acl_delete_perm() function deletes the permission contained in the argument perm from the permission set referred to by the argument permset_d. An attempt to delete a permission that is not contained in the permission set is not considered an error.
         /// </summary>
@@ -635,14 +533,12 @@ namespace libACL
             if (ret == -1)
             {
                 System.Console.Error.WriteLine("Error on AclDeletePerm");
-                
-                Mono.Unix.Native.Errno er = Mono.Unix.Native.Stdlib.GetLastError();
-                string message = Mono.Unix.Native.Stdlib.strerror(er);
-                throw new System.InvalidOperationException(message);
+                throw new System.InvalidOperationException(NativeMethods.ErrorMessage);
             } // End if (ret ==  -1) 
-            
+
         } // End Sub AclDeletePerm 
-        
+
+
         /// <summary>
         /// The acl_clear_perms() function clears all permissions from the permission set referred to by the argument permset_d.
         /// </summary>
@@ -651,22 +547,19 @@ namespace libACL
         /// <exception cref="InvalidOperationException"></exception>
         public static void AclClearPerms(acl_permset_t permset)
         {
-            if(permset == null || permset.Native == System.IntPtr.Zero)
+            if (permset == null || permset.Native == System.IntPtr.Zero)
                 throw new System.ArgumentNullException(nameof(permset));
-            
+
             int ret = NativeMethods.acl_clear_perms(permset.Native);
             if (ret == -1)
             {
                 System.Console.Error.WriteLine("Error on AclClearPerms");
-                
-                Mono.Unix.Native.Errno er = Mono.Unix.Native.Stdlib.GetLastError();
-                string message = Mono.Unix.Native.Stdlib.strerror(er);
-                throw new System.InvalidOperationException(message);
+                throw new System.InvalidOperationException(NativeMethods.ErrorMessage);
             } // End if (ret ==  -1)
-            
+
         } // End Sub AclClearPerms 
-        
-        
+
+
         /// <summary>
         /// The acl_calc_mask() function calculates and sets the permissions associated with the ACL_MASK ACL entry of the ACL referred to by acl_p. The value of the new permissions is the union of the permissions granted by all entries of tag type ACL_GROUP, ACL_GROUP_OBJ, or ACL_USER. If the ACL referred to by acl_p already contains an ACL_MASK entry, its permissions are overwritten; if it does not contain an ACL_MASK entry, one is added.
         /// </summary>
@@ -674,23 +567,20 @@ namespace libACL
         /// <returns>The acl_calc_mask() function returns the value 0 if successful; otherwise the value -1 is returned and the global variable errno is set to indicate the error.</returns>
         public static void AclCalcMask(acl_t acl)
         {
-            if(acl == null || acl.Native == System.IntPtr.Zero)
+            if (acl == null || acl.Native == System.IntPtr.Zero)
                 throw new System.ArgumentNullException(nameof(acl));
-            
+
             int ret = NativeMethods.acl_calc_mask(ref acl.Native);
-            
+
             if (ret == -1)
             {
                 System.Console.Error.WriteLine("Error on AclCalcMask");
-                
-                Mono.Unix.Native.Errno er = Mono.Unix.Native.Stdlib.GetLastError();
-                string message = Mono.Unix.Native.Stdlib.strerror(er);
-                throw new  System.InvalidOperationException( message);
+                throw new System.InvalidOperationException(NativeMethods.ErrorMessage);
             } // End if (ret == -1) 
-            
+
         } // End Sub AclCalcMask 
-        
-        
+
+
         /// <summary>
         /// The acl_get_perm() function tests if the permission specified by the argument perm is contained in the ACL permission set pointed to by the argument permset.
         /// </summary>
@@ -700,7 +590,7 @@ namespace libACL
         public static int AclGetPerm(acl_permset_t permset, acl_perm_t perm)
         {
             int ret = -1;
-            
+
             try
             {
                 ret = NativeMethods.acl_get_perm(permset.Native, perm);
@@ -713,22 +603,19 @@ namespace libACL
                     ret = NativeMethods.acl_get_perm_np(permset.Native, perm);
                 }
                 catch (System.Exception)
-                {}
+                { }
             }
-            
+
             if (ret == -1)
             {
                 System.Console.Error.WriteLine("Error on ACL_GET_PERM");
-                
-                Mono.Unix.Native.Errno er = Mono.Unix.Native.Stdlib.GetLastError();
-                string message = Mono.Unix.Native.Stdlib.strerror(er);
-                throw new System.IO.InvalidDataException( message);
+                throw new System.IO.InvalidDataException(NativeMethods.ErrorMessage);
             } // End if (ret == -1) 
-            
+
             return ret;
         } // End Function AclGetPerm 
-        
-        
+
+
         /// <summary>
         /// The acl_valid() function checks the ACL referred to by the argument acl for validity.
         /// </summary>
@@ -737,23 +624,20 @@ namespace libACL
         public static bool AclValid(acl_t acl)
         {
             int ret = NativeMethods.acl_valid(acl.Native);
-            
+
             if (ret == -1)
             {
                 // Perhaps we need to check if acl is valid...
                 // return false;
-                
+
                 System.Console.Error.WriteLine("AclValid Error");
-                
-                Mono.Unix.Native.Errno er = Mono.Unix.Native.Stdlib.GetLastError();
-                string message = Mono.Unix.Native.Stdlib.strerror(er);
-                throw new System.IO.InvalidDataException("Invalid ACL !\r\n" + message);
+                throw new System.IO.InvalidDataException("Invalid ACL !\r\n" + NativeMethods.ErrorMessage);
             } // End if (ret == -1) 
-            
+
             return true;
         } // End Function AclValid 
-        
-        
+
+
         /// <summary>
         /// The acl_check() function checks the ACL referred to by the argument acl for validity.
         /// </summary>
@@ -769,29 +653,26 @@ namespace libACL
             // at which the error was detected to the value pointed to by last.
             // Entries are numbered starting with zero, in the order
             // in which they would be returned by the acl_get_entry() function.
-            
+
             if (ret == -1)
             {
                 // Perhaps we need to check if acl is valid...
                 // return false;
-                
+
                 System.Console.Error.WriteLine("AclCheck Error");
-                
-                Mono.Unix.Native.Errno er = Mono.Unix.Native.Stdlib.GetLastError();
-                string message = Mono.Unix.Native.Stdlib.strerror(er);
-                throw new System.IO.InvalidDataException("Invalid ACL !\r\n" + message);
+                throw new System.IO.InvalidDataException("Invalid ACL !\r\n" + NativeMethods.ErrorMessage);
             } // End if (ret == -1)
-            
+
             if (ret > 0)
             {
                 string message = AclError(ret);
                 throw new System.IO.InvalidDataException(message);
             } // End if (ret > 0) 
-            
+
             return ret;
         } // End Function AclCheck 
-        
-        
+
+
         /// <summary>
         /// The acl_cmp() function compares the ACLs pointed to by the arguments acl1 and acl2 for equality. The two ACLs are considered equal if for each entry in acl1 there is an entry in acl2 with matching tag type, qualifier, and permissions, and vice versa. 
         /// </summary>
@@ -803,20 +684,17 @@ namespace libACL
             int num = NativeMethods.acl_cmp(acl1.Native, acl2.Native);
             if (num == 0)
                 return true;
-            
+
             if (num == -1)
             {
                 System.Console.Error.WriteLine("Error on AclCmp !");
-                
-                Mono.Unix.Native.Errno er = Mono.Unix.Native.Stdlib.GetLastError();
-                string message = Mono.Unix.Native.Stdlib.strerror(er);
-                throw new System.InvalidOperationException(message);
+                throw new System.InvalidOperationException(NativeMethods.ErrorMessage);
             } // End if (num == -1) 
-            
+
             return false;
         } // End Function AclCmp 
-        
-        
+
+
         /// <summary>
         /// Create an ACL from text
         /// </summary>
@@ -827,24 +705,21 @@ namespace libACL
         {
             if (string.IsNullOrEmpty(text))
                 throw new System.ArgumentNullException(nameof(text));
-            
+
             System.IntPtr ptr = NativeMethods.acl_from_text(text);
             if (ptr == System.IntPtr.Zero)
             {
                 // Perhaps we need to check if text is right...
                 // return null;
-                
+
                 System.Console.Error.WriteLine($"AclFromText: ACL \"{text}\" is wrong!!!");
-                
-                Mono.Unix.Native.Errno er = Mono.Unix.Native.Stdlib.GetLastError();
-                string message = Mono.Unix.Native.Stdlib.strerror(er);
-                throw new System.IO.InvalidDataException("Textual representation of the ACL is wrong !\r\n" + message);
+                throw new System.IO.InvalidDataException("Textual representation of the ACL is wrong !\r\n" + NativeMethods.ErrorMessage);
             } // End if (ptr == System.IntPtr.Zero) 
-            
+
             return new acl_t(ptr);
         } // End Function AclFromText 
-        
-        
+
+
         /// <summary>
         /// convert an ACL to text
         /// </summary>
@@ -857,19 +732,17 @@ namespace libACL
             if (ptr == System.IntPtr.Zero)
             {
                 System.Console.Error.WriteLine("Error on acl_to_text");
-                Mono.Unix.Native.Errno er = Mono.Unix.Native.Stdlib.GetLastError();
-                string message = Mono.Unix.Native.Stdlib.strerror(er);
-                throw new System.InvalidOperationException(message);
+                throw new System.InvalidOperationException(NativeMethods.ErrorMessage);
             } // End if (ptr == System.IntPtr.Zero) 
-            
+
             byte[] ba = new byte[len];
-            System.Runtime.InteropServices.Marshal.Copy(ptr, ba, 0, (int) len);
+            System.Runtime.InteropServices.Marshal.Copy(ptr, ba, 0, (int)len);
             AclFree(ptr);
-            
+
             return System.Text.Encoding.UTF8.GetString(ba);
         } // End Function AclToText 
-        
-        
+
+
         /// <summary>
         /// The acl_to_any_text() function translates the ACL pointed to by the argument acl into a NULL terminated character string.
         /// </summary>
@@ -882,30 +755,28 @@ namespace libACL
         {
             System.IntPtr ptr = NativeMethods.acl_to_any_text(acl.Native, prefix, separator, options);
             // returnStr = new string(fixedPtr);
-            
+
             if (ptr == System.IntPtr.Zero)
             {
                 System.Console.Error.WriteLine("Error on AclToAnyText");
-                Mono.Unix.Native.Errno er = Mono.Unix.Native.Stdlib.GetLastError();
-                string message = Mono.Unix.Native.Stdlib.strerror(er);
-                throw new System.InvalidOperationException(message);
+                throw new System.InvalidOperationException(NativeMethods.ErrorMessage);
             } // End if (ptr == System.IntPtr.Zero) 
-            
+
             System.Collections.Generic.List<byte> lst = new System.Collections.Generic.List<byte>();
-            
+
             byte b;
-            while( (b = Marshal.ReadByte(ptr)) != 0)
+            while ((b = Marshal.ReadByte(ptr)) != 0)
             {
                 lst.Add(b);
             } // Whend 
-            
+
             lst.Add(0);
-            
+
             byte[] ba = lst.ToArray();
             return System.Text.Encoding.UTF8.GetString(ba);
         } // End Function AclToAnyText 
-        
-        
+
+
         /// <summary>
         /// The acl_free() function frees any releasable memory currently allocated by to the ACL data object identified by ptr. 
         /// </summary>
@@ -915,30 +786,28 @@ namespace libACL
         public static void AclFree(System.IntPtr ptr)
         {
             int ret = NativeMethods.acl_free(ptr);
-            if (ret != 0) 
+            if (ret != 0)
             {
                 System.Console.Error.WriteLine("Error on acl_free");
-                Mono.Unix.Native.Errno er = Mono.Unix.Native.Stdlib.GetLastError();
-                string message = Mono.Unix.Native.Stdlib.strerror(er);
-                throw new System.InvalidOperationException(message);    
+                throw new System.InvalidOperationException(NativeMethods.ErrorMessage);
             } // End if (ret != 0) 
-            
+
         } // End Function AclFree 
-        
-        
+
+
         public static void AclFree(acl_t acl_file)
         {
             AclFree(acl_file.Native);
         } // End Function AclFree 
-        
-        
+
+
         public static void AclFree(AclQualifier qualifier)
         {
             AclFree(qualifier.Native);
         } // End Function AclFree 
-        
-        
+
+
     } // End Class API 
-    
-    
+
+
 } // End Namespace 
