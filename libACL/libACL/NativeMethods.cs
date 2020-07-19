@@ -26,9 +26,10 @@ namespace libACL
         // https://man7.org/linux/man-pages/man3/strerror.3.html
         [System.Security.SuppressUnmanagedCodeSecurity]
         [System.Runtime.InteropServices.DllImport(LIBC, CallingConvention = System.Runtime.InteropServices.CallingConvention.Cdecl, EntryPoint = "strerror")]
+        [return: System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(ConstUtf8CustomMarshaler))]
         internal static extern string strerror(Errno errnum);
-
-
+        
+        
         internal static Errno errno
         {
             get
@@ -53,8 +54,9 @@ namespace libACL
             get
             {
                 // throw ACLManagerException(Glib::locale_to_utf8(strerror(errno)));
-
-                string enu = " (Error " + System.Convert.ToString(errno, System.Globalization.CultureInfo.InvariantCulture) + ")";
+                int err = (int) errno;
+                
+                string enu = " (Error " + System.Convert.ToString(err, System.Globalization.CultureInfo.InvariantCulture) + ")";
                 return strerror(errno) + enu;
             }
         }

@@ -6,11 +6,11 @@ namespace libACL
     public class ConstUtf8CustomMarshaler
         : System.Runtime.InteropServices.ICustomMarshaler
     {
-
-
+        
+        
         private static ConstUtf8Marshaler Instance = new ConstUtf8Marshaler();
-
-
+        
+        
         void System.Runtime.InteropServices.ICustomMarshaler.CleanUpManagedData(object pNativeData)
         {
             Instance.CleanUpManagedData(pNativeData);

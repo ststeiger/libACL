@@ -28,8 +28,10 @@ namespace libACL
             if (ret == -1)
             {
                 // return null;
-                System.Console.Error.WriteLine("Error on AclSize");
-                throw new System.InvalidOperationException(NativeMethods.ErrorMessage);
+                string message = NativeMethods.ErrorMessage;
+                
+                System.Console.Error.WriteLine("Error on AclSize"); // WriteLine overwrites GetlastWin32Error
+                throw new System.InvalidOperationException(message);
             } // End if (ret == -1) 
 
             return ret;
@@ -48,8 +50,10 @@ namespace libACL
             if (ptr == System.IntPtr.Zero)
             {
                 // return null;
+                string message = NativeMethods.ErrorMessage; // Backup message, WriteLine overwrites GetlastWin32Error
+                
                 System.Console.Error.WriteLine("Error on AclSetFile");
-                throw new System.InvalidOperationException(NativeMethods.ErrorMessage);
+                throw new System.InvalidOperationException(message);
             } // End if (ptr == System.IntPtr.Zero) 
 
             return new acl_t(ptr);
@@ -67,8 +71,10 @@ namespace libACL
             if (ptr == System.IntPtr.Zero)
             {
                 // return null;
+                string message = NativeMethods.ErrorMessage; // Backup message, WriteLine overwrites GetlastWin32Error
+                
                 System.Console.Error.WriteLine("Error on AclGetFd");
-                throw new System.InvalidOperationException(NativeMethods.ErrorMessage);
+                throw new System.InvalidOperationException(message);
             } // End if (ptr == System.IntPtr.Zero) 
 
             return new acl_t(ptr);
@@ -89,8 +95,10 @@ namespace libACL
 
             if (ret != 0)
             {
+                string message = NativeMethods.ErrorMessage; // Backup message, WriteLine overwrites GetlastWin32Error
+                
                 System.Console.Error.WriteLine("Error on AclSetFile");
-                throw new System.InvalidOperationException(NativeMethods.ErrorMessage);
+                throw new System.InvalidOperationException(message);
             } // End if (ret != 0) 
 
         } // End Sub AclSetFile 
@@ -107,8 +115,10 @@ namespace libACL
 
             if (ret == -1)
             {
+                string message = NativeMethods.ErrorMessage; // Backup message, WriteLine overwrites GetlastWin32Error
+                
                 System.Console.Error.WriteLine("Error on AclDeleteDefFile");
-                throw new System.InvalidOperationException(NativeMethods.ErrorMessage);
+                throw new System.InvalidOperationException(message);
             } // End if (ret != 0) 
 
         } // End Sub AclDeleteDefFile 
@@ -124,8 +134,10 @@ namespace libACL
             int ret = NativeMethods.acl_set_fd(fd, acl.Native);
             if (ret == -1)
             {
+                string message = NativeMethods.ErrorMessage; // Backup message, WriteLine overwrites GetlastWin32Error
+                
                 System.Console.Error.WriteLine("Error on AclSetFd");
-                throw new System.InvalidOperationException(NativeMethods.ErrorMessage);
+                throw new System.InvalidOperationException(message);
             } // End if (ret != 0) 
 
         } // End Function AclSetFd 
@@ -142,8 +154,10 @@ namespace libACL
 
             if (ret == -1)
             {
+                string message = NativeMethods.ErrorMessage; // Backup message, WriteLine overwrites GetlastWin32Error
+                
                 System.Console.Error.WriteLine("Error on AclExtendedFile");
-                throw new System.InvalidOperationException(NativeMethods.ErrorMessage);
+                throw new System.InvalidOperationException(message);
             } // End if (ret != 0) 
 
             return ret == 1;
@@ -161,8 +175,10 @@ namespace libACL
 
             if (ret == -1)
             {
+                string message = NativeMethods.ErrorMessage; // Backup message, WriteLine overwrites GetlastWin32Error
+                
                 System.Console.Error.WriteLine("Error on AclExtendedFileNofollow");
-                throw new System.InvalidOperationException(NativeMethods.ErrorMessage);
+                throw new System.InvalidOperationException(message);
             } // End if (ret != 0) 
 
             return ret == 1;
@@ -179,8 +195,10 @@ namespace libACL
             int ret = NativeMethods.acl_extended_fd(fd);
             if (ret == -1)
             {
+                string message = NativeMethods.ErrorMessage; // Backup message, WriteLine overwrites GetlastWin32Error
+                
                 System.Console.Error.WriteLine("Error on AclExtendedFd");
-                throw new System.InvalidOperationException(NativeMethods.ErrorMessage);
+                throw new System.InvalidOperationException(message);
             } // End if (ret != 0) 
 
             return ret == 1;
@@ -200,8 +218,10 @@ namespace libACL
             if (ret == -1)
             {
                 // return null;
+                string message = NativeMethods.ErrorMessage; // Backup message, WriteLine overwrites GetlastWin32Error
+                
                 System.Console.Error.WriteLine("Error on AclGetEntry");
-                throw new System.InvalidOperationException(NativeMethods.ErrorMessage);
+                throw new System.InvalidOperationException(message);
             } // End if (ret == -1)  
 
             return ret;
@@ -219,8 +239,10 @@ namespace libACL
             if (ptr == System.IntPtr.Zero)
             {
                 // return null;
+                string message = NativeMethods.ErrorMessage; // Backup message, WriteLine overwrites GetlastWin32Error
+                
                 System.Console.Error.WriteLine("Error on AclFromMode");
-                throw new System.InvalidOperationException(NativeMethods.ErrorMessage);
+                throw new System.InvalidOperationException(message);
             } // End if (ptr == System.IntPtr.Zero) 
 
             return new acl_t(ptr);
@@ -239,8 +261,10 @@ namespace libACL
             if (ret == -1)
             {
                 // return null;
+                string message = NativeMethods.ErrorMessage; // Backup message, WriteLine overwrites GetlastWin32Error
+                
                 System.Console.Error.WriteLine("Error on AclEquivMode");
-                throw new System.InvalidOperationException(NativeMethods.ErrorMessage);
+                throw new System.InvalidOperationException(message);
             } // End if (ret == -1)
 
         } // End Sub AclEquivMode 
@@ -257,8 +281,10 @@ namespace libACL
             if (ptr == System.IntPtr.Zero)
             {
                 // return null;
+                string message = NativeMethods.ErrorMessage; // Backup message, WriteLine overwrites GetlastWin32Error
+                
                 System.Console.Error.WriteLine("Error on AclInit");
-                throw new System.InvalidOperationException(NativeMethods.ErrorMessage);
+                throw new System.InvalidOperationException(message);
             } // End if (ptr == System.IntPtr.Zero) 
 
             return new acl_t(ptr);
@@ -277,8 +303,10 @@ namespace libACL
             if (ret == -1)
             {
                 // return null;
+                string message = NativeMethods.ErrorMessage; // Backup message, WriteLine overwrites GetlastWin32Error
+                
                 System.Console.Error.WriteLine("Error on AclCreateEntry");
-                throw new System.InvalidOperationException(NativeMethods.ErrorMessage);
+                throw new System.InvalidOperationException(message);
             } // End if (ret == -1)  
 
         } // End Function AclCreateEntry 
@@ -296,8 +324,10 @@ namespace libACL
             if (ret == -1)
             {
                 // return null;
+                string message = NativeMethods.ErrorMessage; // Backup message, WriteLine overwrites GetlastWin32Error
+                
                 System.Console.Error.WriteLine("Error on AclDeleteEntry");
-                throw new System.InvalidOperationException(NativeMethods.ErrorMessage);
+                throw new System.InvalidOperationException(message);
             } // End if (ret == -1)  
 
         } // End Sub AclDeleteEntry 
@@ -315,8 +345,10 @@ namespace libACL
             if (ret == -1)
             {
                 // return null;
+                string message = NativeMethods.ErrorMessage; // Backup message, WriteLine overwrites GetlastWin32Error
+                
                 System.Console.Error.WriteLine("Error on AclCopyEntry");
-                throw new System.InvalidOperationException(NativeMethods.ErrorMessage);
+                throw new System.InvalidOperationException(message);
             } // End if (ret == -1)  
 
         } // End Function AclCopyEntry 
@@ -332,8 +364,10 @@ namespace libACL
             System.IntPtr ptr = NativeMethods.acl_copy_int(buf);
             if (ptr == System.IntPtr.Zero)
             {
+                string message = NativeMethods.ErrorMessage; // Backup message, WriteLine overwrites GetlastWin32Error
+                
                 System.Console.Error.WriteLine("Error on AclCopyInt");
-                throw new System.InvalidOperationException(NativeMethods.ErrorMessage);
+                throw new System.InvalidOperationException(message);
             } // End if (ret == -1)  
 
             return new acl_t(ptr);
@@ -353,8 +387,10 @@ namespace libACL
 
             if (ret == -1)
             {
+                string message = NativeMethods.ErrorMessage; // Backup message, WriteLine overwrites GetlastWin32Error
+                
                 System.Console.Error.WriteLine("Error on AclCopyExt");
-                throw new System.InvalidOperationException(NativeMethods.ErrorMessage);
+                throw new System.InvalidOperationException(message);
             } // End if (ret == -1)  
 
             return ret;
@@ -372,8 +408,10 @@ namespace libACL
             if (ptr == System.IntPtr.Zero)
             {
                 // return null;
+                string message = NativeMethods.ErrorMessage; // Backup message, WriteLine overwrites GetlastWin32Error
+                
                 System.Console.Error.WriteLine("Error on AclDup");
-                throw new System.InvalidOperationException(NativeMethods.ErrorMessage);
+                throw new System.InvalidOperationException(message);
             } // End if (ptr == System.IntPtr.Zero) 
 
             return new acl_t(ptr);
@@ -391,8 +429,10 @@ namespace libACL
             if (ptr == System.IntPtr.Zero)
             {
                 // return null;
+                string message = NativeMethods.ErrorMessage; // Backup message, WriteLine overwrites GetlastWin32Error
+                
                 System.Console.Error.WriteLine("Error on AclGetQualifier");
-                throw new System.InvalidOperationException(NativeMethods.ErrorMessage);
+                throw new System.InvalidOperationException(message);
             } // End if (ptr == System.IntPtr.Zero) 
 
             return new AclQualifier(ptr);
@@ -411,8 +451,10 @@ namespace libACL
             int ret = NativeMethods.acl_set_qualifier(entry.Native, ref qualifier);
             if (ret == -1)
             {
+                string message = NativeMethods.ErrorMessage; // Backup message, WriteLine overwrites GetlastWin32Error
+                
                 System.Console.Error.WriteLine("Error on AclSetQualifier");
-                throw new System.InvalidOperationException(NativeMethods.ErrorMessage);
+                throw new System.InvalidOperationException(message);
             } // End if (ret == -1)
 
         } // End Function AclSetQualifier 
@@ -431,8 +473,10 @@ namespace libACL
             int ret = NativeMethods.acl_get_tag_type(entry.Native, out tag_type);
             if (ret == -1)
             {
+                string message = NativeMethods.ErrorMessage; // Backup message, WriteLine overwrites GetlastWin32Error
+                
                 System.Console.Error.WriteLine("Error on AclGetTagType");
-                throw new System.InvalidOperationException(NativeMethods.ErrorMessage);
+                throw new System.InvalidOperationException(message);
             } // End if (ret == -1) 
 
             return tag_type;
@@ -451,8 +495,10 @@ namespace libACL
             int ret = NativeMethods.acl_set_tag_type(entry.Native, tag_type);
             if (ret == -1)
             {
+                string message = NativeMethods.ErrorMessage; // Backup message, WriteLine overwrites GetlastWin32Error
+                
                 System.Console.Error.WriteLine("Error on AclSetTagType");
-                throw new System.InvalidOperationException(NativeMethods.ErrorMessage);
+                throw new System.InvalidOperationException(message);
             } // End if (ret == -1) 
 
         } // End Function AclSetTagType 
@@ -474,8 +520,10 @@ namespace libACL
             int ret = NativeMethods.acl_get_permset(entry.Native, out permset.Native);
             if (ret == -1)
             {
+                string message = NativeMethods.ErrorMessage; // Backup message, WriteLine overwrites GetlastWin32Error
+                
                 System.Console.Error.WriteLine("Error on AclGetPermset");
-                throw new System.InvalidOperationException(NativeMethods.ErrorMessage);
+                throw new System.InvalidOperationException(message);
             } // End if (ret ==  -1) 
 
             return permset;
@@ -493,8 +541,10 @@ namespace libACL
             int ret = NativeMethods.acl_set_permset(entry.Native, permset.Native);
             if (ret == -1)
             {
+                string message = NativeMethods.ErrorMessage; // Backup message, WriteLine overwrites GetlastWin32Error
+                
                 System.Console.Error.WriteLine("Error on AclSetPermset");
-                throw new System.InvalidOperationException(NativeMethods.ErrorMessage);
+                throw new System.InvalidOperationException(message);
             } // End if (ret ==  -1) 
 
         } // End Sub AclSetPermset 
@@ -514,8 +564,10 @@ namespace libACL
             int ret = NativeMethods.acl_add_perm(permset.Native, perm);
             if (ret == -1)
             {
+                string message = NativeMethods.ErrorMessage; // Backup message, WriteLine overwrites GetlastWin32Error
+                
                 System.Console.Error.WriteLine("Error on AclAddPerm");
-                throw new System.InvalidOperationException(NativeMethods.ErrorMessage);
+                throw new System.InvalidOperationException(message);
             } // End if (ret ==  -1) 
 
         } // End Function AclAddPerm 
@@ -532,8 +584,10 @@ namespace libACL
             int ret = NativeMethods.acl_delete_perm(permset.Native, perm);
             if (ret == -1)
             {
+                string message = NativeMethods.ErrorMessage; // Backup message, WriteLine overwrites GetlastWin32Error
+                
                 System.Console.Error.WriteLine("Error on AclDeletePerm");
-                throw new System.InvalidOperationException(NativeMethods.ErrorMessage);
+                throw new System.InvalidOperationException(message);
             } // End if (ret ==  -1) 
 
         } // End Sub AclDeletePerm 
@@ -553,8 +607,10 @@ namespace libACL
             int ret = NativeMethods.acl_clear_perms(permset.Native);
             if (ret == -1)
             {
+                string message = NativeMethods.ErrorMessage; // Backup message, WriteLine overwrites GetlastWin32Error
+                
                 System.Console.Error.WriteLine("Error on AclClearPerms");
-                throw new System.InvalidOperationException(NativeMethods.ErrorMessage);
+                throw new System.InvalidOperationException(message);
             } // End if (ret ==  -1)
 
         } // End Sub AclClearPerms 
@@ -574,8 +630,10 @@ namespace libACL
 
             if (ret == -1)
             {
+                string message = NativeMethods.ErrorMessage; // Backup message, WriteLine overwrites GetlastWin32Error
+                
                 System.Console.Error.WriteLine("Error on AclCalcMask");
-                throw new System.InvalidOperationException(NativeMethods.ErrorMessage);
+                throw new System.InvalidOperationException(message);
             } // End if (ret == -1) 
 
         } // End Sub AclCalcMask 
@@ -608,8 +666,10 @@ namespace libACL
 
             if (ret == -1)
             {
+                string message = NativeMethods.ErrorMessage; // Backup message, WriteLine overwrites GetlastWin32Error
+                
                 System.Console.Error.WriteLine("Error on ACL_GET_PERM");
-                throw new System.IO.InvalidDataException(NativeMethods.ErrorMessage);
+                throw new System.IO.InvalidDataException(message);
             } // End if (ret == -1) 
 
             return ret;
@@ -629,9 +689,10 @@ namespace libACL
             {
                 // Perhaps we need to check if acl is valid...
                 // return false;
-
+                string message = NativeMethods.ErrorMessage; // Backup message, WriteLine overwrites GetlastWin32Error
+                
                 System.Console.Error.WriteLine("AclValid Error");
-                throw new System.IO.InvalidDataException("Invalid ACL !\r\n" + NativeMethods.ErrorMessage);
+                throw new System.IO.InvalidDataException("Invalid ACL !\r\n" + message);
             } // End if (ret == -1) 
 
             return true;
@@ -658,9 +719,10 @@ namespace libACL
             {
                 // Perhaps we need to check if acl is valid...
                 // return false;
+                string message = NativeMethods.ErrorMessage; // Backup message, WriteLine overwrites GetlastWin32Error
 
                 System.Console.Error.WriteLine("AclCheck Error");
-                throw new System.IO.InvalidDataException("Invalid ACL !\r\n" + NativeMethods.ErrorMessage);
+                throw new System.IO.InvalidDataException("Invalid ACL !\r\n" + message);
             } // End if (ret == -1)
 
             if (ret > 0)
@@ -687,8 +749,10 @@ namespace libACL
 
             if (num == -1)
             {
+                string message = NativeMethods.ErrorMessage; // Backup message, WriteLine overwrites GetlastWin32Error
+                
                 System.Console.Error.WriteLine("Error on AclCmp !");
-                throw new System.InvalidOperationException(NativeMethods.ErrorMessage);
+                throw new System.InvalidOperationException(message);
             } // End if (num == -1) 
 
             return false;
@@ -711,9 +775,10 @@ namespace libACL
             {
                 // Perhaps we need to check if text is right...
                 // return null;
-
+                string message = NativeMethods.ErrorMessage; // Backup message, WriteLine overwrites GetlastWin32Error
+                
                 System.Console.Error.WriteLine($"AclFromText: ACL \"{text}\" is wrong!!!");
-                throw new System.IO.InvalidDataException("Textual representation of the ACL is wrong !\r\n" + NativeMethods.ErrorMessage);
+                throw new System.IO.InvalidDataException("Textual representation of the ACL is wrong !\r\n" + message);
             } // End if (ptr == System.IntPtr.Zero) 
 
             return new acl_t(ptr);
@@ -731,8 +796,10 @@ namespace libACL
             System.IntPtr ptr = NativeMethods.acl_to_text(acl.Native, out ulong len);
             if (ptr == System.IntPtr.Zero)
             {
+                string message = NativeMethods.ErrorMessage; // Backup message, WriteLine overwrites GetlastWin32Error
+                
                 System.Console.Error.WriteLine("Error on acl_to_text");
-                throw new System.InvalidOperationException(NativeMethods.ErrorMessage);
+                throw new System.InvalidOperationException(message);
             } // End if (ptr == System.IntPtr.Zero) 
 
             byte[] ba = new byte[len];
@@ -758,8 +825,10 @@ namespace libACL
 
             if (ptr == System.IntPtr.Zero)
             {
+                string message = NativeMethods.ErrorMessage; // Backup message, WriteLine overwrites GetlastWin32Error
                 System.Console.Error.WriteLine("Error on AclToAnyText");
-                throw new System.InvalidOperationException(NativeMethods.ErrorMessage);
+                
+                throw new System.InvalidOperationException(message); 
             } // End if (ptr == System.IntPtr.Zero) 
 
             System.Collections.Generic.List<byte> lst = new System.Collections.Generic.List<byte>();
@@ -788,8 +857,10 @@ namespace libACL
             int ret = NativeMethods.acl_free(ptr);
             if (ret != 0)
             {
-                System.Console.Error.WriteLine("Error on acl_free");
-                throw new System.InvalidOperationException(NativeMethods.ErrorMessage);
+                string message = NativeMethods.ErrorMessage;
+                
+                System.Console.Error.WriteLine("Error on acl_free"); // WriteLine overwrites GetlastWin32Error
+                throw new System.InvalidOperationException(message);
             } // End if (ret != 0) 
 
         } // End Function AclFree 

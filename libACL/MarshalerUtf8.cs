@@ -8,9 +8,20 @@ namespace libACL
     {
 
 
-        private static Utf8Marshaler Instance = new Utf8Marshaler();
-
-
+        private static readonly Utf8Marshaler Instance;
+        private static readonly System.Action<int> s_setLastWin32Error;
+        
+        
+        static Utf8CustomMarshaler()
+        {
+            System.Type t = typeof(System.Runtime.InteropServices.Marshal);
+            System.Reflection.MethodInfo mi = t.GetMethod("SetLastWin32Error", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic);
+            // mi.Invoke(null, new object[] { (object)lastError });
+            s_setLastWin32Error = (System.Action<int>) mi.CreateDelegate(typeof(System.Action<int>));
+            Instance = new Utf8Marshaler();
+        }
+        
+        
         void System.Runtime.InteropServices.ICustomMarshaler.CleanUpManagedData(object pNativeData)
         {
             Instance.CleanUpManagedData(pNativeData);
@@ -18,7 +29,9 @@ namespace libACL
 
         void System.Runtime.InteropServices.ICustomMarshaler.CleanUpNativeData(System.IntPtr pNativeData)
         {
+            int lastError = System.Runtime.InteropServices.Marshal.GetLastWin32Error();
             Instance.CleanUpNativeData(pNativeData);
+            s_setLastWin32Error(lastError);
         }
 
         int System.Runtime.InteropServices.ICustomMarshaler.GetNativeDataSize()
